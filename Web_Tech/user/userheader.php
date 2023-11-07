@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/reglog.css">
+    <link rel="stylesheet" type="text/css" href="/Web_Tech/css/header.css">
     <title>MedBook</title>
 </head>
 
@@ -37,12 +38,17 @@
     </div>
 </div>
 
+
+
+
 <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a href="#" class="navbar-brand mb-0" >
+            <div class="navbar-brand">
+            <a href="#" class="mb-0" >
                 <i class="fa-solid fa-truck-medical"></i>MedBook
             </a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-lable="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
@@ -92,9 +98,8 @@
                 </ul>
             </div>
         </div>
-    </nav>
+</nav>
 </header>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>

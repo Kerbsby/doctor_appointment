@@ -56,15 +56,14 @@ if(isset($_POST['signup'])) {
 <body>
 
 
-
-
-
 <section class="sign-in">
-    <div class="bg-image">
-        <div class="container d-flex justify-content-center align-items-center" id="container">
-            <form action="register.php" class="form-signup border shadow p-3 rounded" method="post">
-                <h2 class="modal-title">Sign Up</h2>
-                <h5>Join and give us money</h5>
+    <div class="register-bg">
+        <div class="reg-form container " id="reg-form">
+            <form action="register.php" class="form-signup" method="post">
+                <div class="reg-title">
+                    <h2 class="modal-title">Sign Up</h2>
+                    <h5>Join and give us money</h5>
+                </div>
                 <hr class="mb-3">
                 <div class="row">
                     <div class="col-sm-6 col-sm-6">
@@ -196,6 +195,10 @@ if(isset($_POST['signup'])) {
                     <input type="radio" id="gender" name="pGender" value="female" required/>Female
                 </label>
                 <br />
+
+                <div class="accountreg-link">
+                    <a href="/Web_Tech/doctor/doctor_reg.php">Signup as Doctor?</a>
+                </div>
                 <div class="d-md-flex justify-content-md-end">
                     <button class="btn me-md-2 signup-btn" type="submit" name="signup" id="signup">Create my account</button>
                 </div>

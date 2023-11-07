@@ -61,11 +61,13 @@ if(isset($_POST['signup'])) {
 
 
 <section class="sign-in">
-    <div class="bg-image">
-        <div class="container d-flex justify-content-center align-items-center" id="container">
+    <div class="register-bg">
+        <div class="reg-form container" id="container">
             <form action="doctor_reg.php" class="form-signup border shadow p-3 rounded" method="post">
-                <h2 class="modal-title">Sign Up</h2>
-                <h5>Join and give us money</h5>
+            <div class="reg-title">
+                    <h2 class="modal-title">Sign Up</h2>
+                    <h5>Join and give us money</h5>
+                </div>
                 <hr class="mb-3">
                 <div class="row">
                     <div class="col-sm-6 col-sm-6">
@@ -79,9 +81,11 @@ if(isset($_POST['signup'])) {
                     <div class="col-sm-6 col-sm-6">
                         <label>Email</label> <input type="email" name="dEmail" value="" id="email" class="form-control input-lg " placeholder="Your Email"  required/>
                     </div>
+                    <div class="col-sm-6 col-sm-6">
+                     <label>Address</label>
+                    <input type="text" name="dAddress" value="" id="address" class="form-control input-lg" placeholder="Address" required />
+                    </div>
                 </div>
-                <label>Address</label>
-                <input type="text" name="dAddress" value="" id="address" class="form-control input-lg" placeholder="Address" required />
                 <label>Specialize in</label>
                 <div class="input-group col-md-12">
                     <textarea class="form-control" name="comments" id="comments" placeholder="Field" rows="3"></textarea>
@@ -202,6 +206,10 @@ if(isset($_POST['signup'])) {
                 <label class="radio-inline" >
                     <input type="radio" id="gender" name="dGender" value="female" required/>Female
                 </label>
+
+                <div class="accountreg-link">
+                    <a href="/Web_Tech/user/register.php">Signup as Patient?</a>
+                </div>
                 <br />
                 <div class="d-md-flex justify-content-md-end">
                     <button class="btn me-md-2 signup-btn" type="submit" name="signup" id="signup">Create my account</button>

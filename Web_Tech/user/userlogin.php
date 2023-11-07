@@ -7,26 +7,36 @@ session_start();
 error_reporting(0);
 
 
-if (isset($_POST['loginuser'])) {
+if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = md5($_POST['password']);
+    $userType = $_POST['user_type'];
 
-    $sql = "SELECT * FROM patient WHERE p_email = '$email' AND p_password='$password'";
+    if ($userType == 'patient') {
+        $sql = "SELECT * FROM patient WHERE p_email = '$email' AND p_password='$password'";
+        $redirectUrl = "/Web_Tech/user/userhome.php";
+    } elseif ($userType == 'doctor') {
+        $sql = "SELECT * FROM doctor WHERE d_email = '$email' AND d_password='$password'";
+        $redirectUrl = "/Web_Tech/doctor/doctorhome.php";
+    }
+
     $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_assoc($result);
-        $_SESSION['email'] =$email;
-        header("Location: /Web_Tech/user/userhome.php");
-    }
-    else {
+        if ($userType == 'patient') {
+            $_SESSION['email'] = $email;
+        } elseif ($userType == 'doctor') {
+            $_SESSION['d_email'] = $email;
+        }
+        header("Location: $redirectUrl");
+    } else {
         echo 'Email or Password is Wrong!';
     }
 }
 
+
 ?>
-
-
 
 
 
@@ -56,24 +66,31 @@ if (isset($_POST['loginuser'])) {
             <form action="" class="form-signup border shadow p-3 rounded" method="POST">
                 <h2 class="modal-title">Login</h2>
                 <hr class="mb-3">
-                <div class="col-sm-6 col-sm-6">
+                
                 <div class="form-group" id="logform">
-                    <label>Email</label><input type="email" class="form-control input-lg " placeholder="Email Address" id="email" name="email" required>
+                    <label>Email</label>
+                    <input type="email" class="form-control input-lg" placeholder="Email Address" id="email" name="email" required>
                 </div>
-                </div>
-                <div class="col-sm-6 col-sm-6">
+                
                 <div class="form-group" id="logform">
-                    <label>Password</label> <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="password" required>
+                    <label>Password</label>
+                    <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="password" required>
                 </div>
+
+                <div class="form-group" id="logform">
+                    <label>User Type</label>
+                    <select class="form-control" name="user_type" required>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
                 </div>
 
                 <div class="form-group d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-block" name="loginuser" id="loginuser">Login</button>
+                    <button type="submit" class="btn btn-block" name="login" id="login">Login</button>
                 </div>
-
             </form>
         </div>
-
+    </div>
 </section>
 
 

@@ -1,33 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+
+
 .adminlog{
     background:  linear-gradient(rgba(180, 175, 175, 0.27), rgba(255, 255, 255, 0.4)), url(/Web_Tech/img/dr2.png) no-repeat center center fixed;
     background-size: cover;
-
-
 }
 
 
 
+
+.accountreg-link{
+   padding-top: 20px;
+}
+
+ .accountreg-link a{
+    font-size: 16px;
+    color: #2c3e50;
+
+}
+
+
 /*register*/
 .form-signup{
-    width: 50vh;
+    max-width: 50%; /* Set the maximum width to 70% of the parent element's width */
+    width: 50%; /* Ensure the element takes up 100% of the available width *//
+}
+
+.reg-title{
+    font-family: 'Poppins', serif;
+    font-weight: 700px;
 }
 
 img{
     width: 100%;
 }
 
-.bg-image{
-    background-size: cover !important;
+
+
+
+#reg-form{
+    height: 85vh;
 }
 
 
-#container{
-    height: 90vh;
-}
 
-.bg-image{
+.register-bg{
     background-image: linear-gradient(rgba(180, 175, 175, 0.27), rgba(255, 255, 255, 0.4)), url('/Web_Tech/img/dr_banner.jpg');
-    height: 92.2vh;
+    height: 86.5vh;
+    background-size: cover !important;
 }
 
 
@@ -77,8 +98,27 @@ label{
 }
 
 
+.form-signup{
+    position: relative;
+    top: 100px;
+}
+
+.form-signup{
+    background-color: white;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.2); /* Box shadow with horizontal and vertical offset of 4px, blur radius of 4px, and opacity of 0.2 */
+    padding: 20px 40px 20px 40px; 
+    border-radius: 8px; 
+}
 
 
+.form-group .radio-label{
+    display: inline-block;
+   margin-right: 20px;
+}
+
+.userchoice{
+    margin-top: 10px;
+}
 
 /*login*/
 .dropdown-menu{
@@ -88,8 +128,7 @@ label{
     background-color: rgba(255, 255, 255, .8);
 }
 
-#loginuser,
-#logindoc{
+#login{
     background-color: #057b81;
     color: #ffff;
     border-color: #046167;
@@ -98,14 +137,30 @@ label{
 
 
 
-#loginuser:hover{
+#login:hover{
     color: #ffff;
     background-color: #04afb6;
 }
 
-#logindoc:hover{
-    color: #ffff;
-    background-color: #04afb6;
+
+.alert {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
 
 

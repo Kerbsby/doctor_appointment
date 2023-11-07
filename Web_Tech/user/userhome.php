@@ -4,37 +4,46 @@
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 session_start();
-include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
-
-
-
 
 if(isset($_POST['appointsub'])) {
-    $doctor = $_POST['doctor'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
-    $symptoms = $_POST['symptom'];
-    $comment = $_POST['comment'];
+    $doctorEmail = mysqli_real_escape_string($conn, $_POST['doctor']);
+    $date = mysqli_real_escape_string($conn, $_POST['date']);
+    $time = mysqli_real_escape_string($conn, $_POST['time']);
+    $symptoms = mysqli_real_escape_string($conn, $_POST['symptom']);
+    $comment = mysqli_real_escape_string($conn, $_POST['comment']);
+    $currentUser = $_SESSION['email'];
 
+    // Fetch the doctor's name based on the selected email
+    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
+    $doctorResult = mysqli_query($conn, $doctorQuery);
 
-$currentUser = $_SESSION['email'];
-    $sql = "SELECT * FROM patient  WHERE p_email = '$currentUser'";
-    $sql = "SELECT * FROM doctor  WHERE d_FullName = '$doctor'";
-    
+    if ($doctorResult) {
+        $doctorRow = mysqli_fetch_assoc($doctorResult);
+        $doctorName = $doctorRow['d_FullName'];
 
+        // Insert appointment with doctor's name
+        $insertQuery = "INSERT INTO appointment (p_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                        VALUES ('$currentUser', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
 
-    $sql = "INSERT INTO appointment (p_email,d_name, appDate, appTime, appSymptoms, appComments) VALUES ('$currentUser','$doctor', '$date', '$time', '$symptoms', '$comment')";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        echo "Appointment set. Thankyou!";
+        $result = mysqli_query($conn, $insertQuery);
+
+        if ($result) {
+            header("Location: /Web_Tech/user/userhome.php?d_email=$doctorEmail");
+        } else {
+            echo "Error: " . mysqli_error($conn); 
+        }
     } else {
-        echo "Message not sent";
+        echo "Error: " . mysqli_error($conn); 
     }
 }
-
 ?>
+
+
 <?php
-include 'C:\xampp\htdocs\Web_Tech\config\config.php';
+include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
+?>
+
+<?php
 
 $currentUser = $_SESSION['email'];
 $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
@@ -75,8 +84,11 @@ while ($row = mysqli_fetch_array($result)) {
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h6 class="text-uppercase text-white">Your illness, Our happiness!</h6>
+                    <h4 class="text-uppercase text-white">Welcome,  <?php echo $row['p_FullName'];?></h4>
                     <h1 class="display-2 my-4 text-white text-uppercase">Certified Doctor's <br>Appointment System</h1>
+                    <div class="set-section">
+                    <a href="#appointment-area">Click here for an Appointment</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,6 +97,7 @@ while ($row = mysqli_fetch_array($result)) {
 
 
 <!--appointment set-->
+<div id="appointment-area">
 <div class="medbook-book-an-appoinment-area">
     <div class="container">
         <div class="row">
@@ -132,6 +145,7 @@ while ($row = mysqli_fetch_array($result)) {
         </div>
     </div>
 </div>
+</div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
     <div class="modal-dialog" role="document">
@@ -167,15 +181,24 @@ while ($row = mysqli_fetch_array($result)) {
                                         }
                                         ?>
                                         <select class="form-select" aria-label="Default select example" name="doctor">
-                                            <option selected>Select a doctors</option>
-                                            <?php
-                                            $query = "SELECT * FROM doctor";
-                                            $query_run = mysqli_query($conn, $query);
+                                        <option selected>Select a doctor</option>
+                                        <?php
+                                        $query = "SELECT * FROM doctor";
+                                        $query_run = mysqli_query($conn, $query);
 
-                                            if(mysqli_num_rows($query_run) > 0){
+                                        if(mysqli_num_rows($query_run) > 0){
                                             foreach ($query_run as $row){
-                                            ?>
-                                             <option value="<?= $row['d_email'];?>"><?= $row['d_FullName'];?></option>
+                                                // Fetch the doctor's specialty from the database based on the email
+                                                $doctorEmail = $row['d_email'];
+                                                $specialtyQuery = "SELECT d_specialize FROM doctor WHERE d_email = '$doctorEmail'";
+                                                $specialtyResult = mysqli_query($conn, $specialtyQuery);
+                                                $specialtyRow = mysqli_fetch_assoc($specialtyResult);
+                                                $specialty = $specialtyRow['d_specialize'];
+                                        ?>
+                                        <option value="<?= $doctorEmail; ?>" data-specialty="<?= $specialty; ?>">
+                                            <?= $row['d_FullName']; ?> - <?= $specialty; ?>
+                                        </option>
+                                                                                
                                                 <?php
                                             }
                                             }
@@ -216,7 +239,7 @@ while ($row = mysqli_fetch_array($result)) {
         </div>
     </div>
 </div>
-</div>
+
 
 <!--bottom content-->
 <section id="content-1-9" class="content-1-9 content-block">

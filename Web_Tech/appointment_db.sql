@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2022 at 01:28 AM
+-- Generation Time: Aug 21, 2023 at 06:21 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -46,7 +46,9 @@ INSERT INTO `appointment` (`requestID`, `d_name`, `p_email`, `appDate`, `appTime
 (102, '123@gmail.com', 'kervy_yu@gmail.com', '2022-11-08', '16:52:00', 'dsad', 'adada', 'process'),
 (104, 'doc@gmail.com', 'nadyn@gmail.com', '2022-10-30', '07:58:00', 'adaadad', 'accsvsf', 'process'),
 (107, '123@gmail.com', 'nadyn@gmail.com', '2022-11-15', '17:09:00', 'adaw', 'adawd', 'process'),
-(108, '123@gmail.com', 'user@gmail.com', '2022-12-08', '19:53:00', 'ead', 'adawdawd', 'process');
+(108, '123@gmail.com', 'user@gmail.com', '2022-12-08', '19:53:00', 'ead', 'adawdawd', 'process'),
+(109, 'Select a doctors', 'kervy@gmail.com', '2023-06-14', '15:33:00', 'adawdawdaw', 'ada', 'process'),
+(112, 'trylng@gmail.com', 'kerbs.yu@gmail.com', '2023-08-06', '14:19:00', 'adaw', 'adad', 'process');
 
 -- --------------------------------------------------------
 
@@ -95,7 +97,8 @@ CREATE TABLE `doctor` (
 INSERT INTO `doctor` (`doctorID`, `d_FullName`, `d_email`, `d_number`, `d_address`, `d_password`, `d_DOB`, `d_gender`, `doctor_type`, `d_specialize`) VALUES
 (2, 'Jacob Satorium', '123@gmail.com', 9273930696, 'Tugbungan', 'b59c67bf196a4758191e42f76670ceba', '1981-03-02', 'male', 'doctor', 'Heart Spatial Investigator Surgeon'),
 (5, 'Jacob Satorium Jr.', 'doc@gmail.com', 9273930696, 'Guiwan', 'b59c67bf196a4758191e42f76670ceba', '1981-02-02', 'male', 'doctor', 'Anesthetic Neurologic Urinary Specialist(ANUS) '),
-(6, 'Zafina', 'doctor@gmail.com', 9273930696, 'Tugbungan', 'b59c67bf196a4758191e42f76670ceba', '1996-02-16', 'female', 'doctor', 'dawdadad');
+(6, 'Zafina', 'doctor@gmail.com', 9273930696, 'Tugbungan', 'b59c67bf196a4758191e42f76670ceba', '1996-02-16', 'female', 'doctor', 'dawdadad'),
+(7, 'Kervy Yu', 'trylng@gmail.com', 0, 'dawd', 'b59c67bf196a4758191e42f76670ceba', '1996-09-14', 'male', 'doctor', 'adasd');
 
 -- --------------------------------------------------------
 
@@ -120,7 +123,9 @@ CREATE TABLE `patient` (
 --
 
 INSERT INTO `patient` (`patientID`, `p_FullName`, `p_password`, `p_DOB`, `p_gender`, `p_address`, `p_number`, `p_email`, `patient_type`) VALUES
-(97, 'Kervy Yu', 'b59c67bf196a4758191e42f76670ceba', '1997-08-15', 'male', 'Tugbungan', 9273930696, 'user@gmail.com', 'user');
+(97, 'Kervy Yu', 'b59c67bf196a4758191e42f76670ceba', '1997-08-15', 'male', 'Tugbungan', 9273930696, 'user@gmail.com', 'user'),
+(98, 'Kervy Yu', 'b59c67bf196a4758191e42f76670ceba', '1996-10-17', 'male', 'Tugbungan', 9273930696, 'kervy@gmail.com', 'user'),
+(99, 'Kervy', 'b59c67bf196a4758191e42f76670ceba', '1997-10-16', 'male', 'dawd', 9273847596, 'kerbs.yu@gmail.com', 'user');
 
 --
 -- Indexes for dumped tables
@@ -158,7 +163,7 @@ ALTER TABLE `patient`
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `requestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `requestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `app_admin`
@@ -170,13 +175,13 @@ ALTER TABLE `app_admin`
 -- AUTO_INCREMENT for table `doctor`
 --
 ALTER TABLE `doctor`
-  MODIFY `doctorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `doctorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `patient`
 --
 ALTER TABLE `patient`
-  MODIFY `patientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `patientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,11 +3,11 @@
 
 
 
-body{
-    font-family:'Barlow', sans-serif;
+body {
+    font-family: 'Barlow', sans-serif;
     line-height: 1.7;
     color: #516171;
-
+}
 
 
 @media only screen and (max-width : 767px){
@@ -57,7 +57,7 @@ body{
     }
 
 }
-}
+
 
 h1,h2,h3,h4,h5,h6 {
     font-weight: 700;
@@ -84,72 +84,6 @@ img{
 
 
 
-/*navbar*/
-
-.top-nav{
-    background-color: #092032;
-}
-
-.top-nav p{
-    margin-bottom: 10px;
-    display: inline-block;
-    margin-right: 16px;
-    color: white;
-}
-
-.top-nav i,
-.top-nav span{
-    vertical-align: middle;
-}
-
-.social-icons a{
-    width: 34px;
-    height: 34px;
-    background-color: rgba(255, 255, 255, 0.3);
-    display: inline-flex ;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: white;
-    font-size: 20px;
-    border-radius: 100%;
-    transition: 0.3s ease;
-}
-
-.social-icons a:hover{
-    background-color: white;
-    color: #057b81;
-}
-
-.navbar{
-    box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
-}
-
-.navbar a {
-    color: #092032;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.5s ease;
-
-}
-
-
-.navbar-brand{
-    font-weight: 700;
-    font-size: 26px;
-    color: #092032;
-}
-
-.navbar .navbar-nav .nav-link:hover,
-.navbar .navbar-nav .nav-link.active {
-    color: #659EC7;
-}
-
-.nav-item{
-    margin: 0px 20px 0px 20px;
-}
-
-
 
 /*button*/
 
@@ -172,7 +106,7 @@ img{
 
 /*Img Slider*/
 .slide1{
-    background-image: linear-gradient(rgba(26, 92, 154, 0.4), rgba(25, 87, 140, 0.4)), url(/Web_Tech/img/doctor.png);
+    background-image: linear-gradient(rgba(26, 92, 154, 0.4), rgba(25, 87, 140, 0.4)), url(../img/doctor.png);
     margin-bottom: 105px;
 }
 
@@ -200,6 +134,17 @@ p{
 }
 
 
+.set-section a{
+    text-decoration: none;
+    text-transform: uppercase;
+    color: white;
+    transition: 0.5s ease;
+}
+
+
+.set-section a:hover{
+    color:#081f3e;
+}
 
 
 /*appointment*/
@@ -233,7 +178,7 @@ p{
         margin-top: 15px; } }
 .medbook-book-an-appoinment-area .medbook-contact-info {
     padding: 30px;
-    background-color: #006cff;
+    background-color: #057b81;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     .medbook-book-an-appoinment-area .medbook-contact-info {
@@ -250,7 +195,7 @@ p{
 #medilife{
     display: inline-block;
     color: #ffffff;
-    background-color: #006cff;
+    background-color: #057b81;
     height: 45px;
     padding: 0 55px 0 30px;
     line-height: 42px;
@@ -279,11 +224,10 @@ p{
 #medilife:hover, #medilife:focus {
     background-color: #081f3e;
     color: #ffffff;
-    border-color: none;
 }
 .medilife-btn:hover span, .medilife-btn:focus span {
     color: #ffffff;
-    background-color: #006cff; }
+    background-color: #057b81; }
 
 
 
@@ -557,6 +501,21 @@ p{
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #dddddd;
+}
+
+
+
+.quick-appoint .appoint-btn{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+
+.appoint-btn .btn{
+    color: white;
+    background-color: #057b81;
 }
 
 
