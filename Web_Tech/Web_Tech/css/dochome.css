@@ -1,0 +1,124 @@
+
+
+
+:root {
+    --main-bg-color: #009d63;
+    --main-text-color: #009d63;
+    --second-text-color: #bbbec5;
+    --second-bg-color: #c1efde;
+}
+
+#wrapper-header{
+    background-color: #092032;
+}
+
+#docheader{
+    color: white;
+    font-weight: 800;
+    font-size: 40px;
+}
+
+.primary-text {
+    color: var(--main-text-color);
+}
+
+.second-text {
+    color: var(--second-text-color);
+}
+
+.primary-bg {
+    background-color: var(--main-bg-color);
+}
+
+.secondary-bg {
+    background-color: var(--second-bg-color);
+}
+
+.rounded-full {
+    border-radius: 100%;
+}
+
+#wrapper {
+    overflow-x: hidden;
+    background-image: linear-gradient(
+            to right,
+            #86f3f6,
+            #70e8ec,
+            #80e0e8,
+            #b3e5ef,
+            #ddfaef
+    );
+}
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    transition: 0.3s ease;
+}
+
+.sidebar-heading a{
+    font-weight: 700;
+    font-size: 26px;
+    color: #092032;
+    transition: 0.3s ease;
+}
+.sidebar-heading a:hover{
+    color: var(--second-text-color);
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+#menu-toggle {
+    cursor: pointer;
+}
+
+.list-group-item {
+    border: none;
+    padding: 20px 30px;
+}
+
+.list-group-item.active {
+    background-color: transparent;
+    color: var(--main-text-tablor);
+    font-weight: bold;
+    border: none;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+
+                      /*<div class="form-group">
+							<label for="description" class="control-label">Active</label>
+							<select class="form-control" id="status" name="status"/>
+								<option value="Active">Active</option>
+								<option value="Completed">Completed</option>
+								<option value="Cancelled">Cancelled</option>
+							</select>
+						</div>
