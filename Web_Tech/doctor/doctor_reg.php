@@ -199,14 +199,15 @@ if(isset($_POST['signup'])) {
                         </select>
                     </div>
                 </div>
-                <label>Gender : </label>
-                <label class="radio-inline">
-                    <input type="radio" id="gender" name="dGender" value="male" required/>Male
-                </label>
-                <label class="radio-inline" >
-                    <input type="radio" id="gender" name="dGender" value="female" required/>Female
-                </label>
-
+                <div class="gender">
+                    <label>Gender : </label>
+                    <label class="radio-inline">
+                        <input type="radio" id="gender" name="dGender" value="male" required/>Male
+                    </label>
+                    <label class="radio-inline" >
+                        <input type="radio" id="gender" name="dGender" value="female" required/>Female
+                    </label>
+                </div>
                 <div class="accountreg-link">
                     <a href="/Web_Tech/user/register.php">Signup as Patient?</a>
                 </div>

@@ -76,9 +76,9 @@ img{
 }
 
 .bg-cover{
-    background-position: center !important;
-    background-size: cover !important;
-    background-position: center !important;
+    background-position: center;
+    background-size: cover ;
+    background-position: center ;
 }
 
 

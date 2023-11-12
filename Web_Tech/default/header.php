@@ -123,13 +123,13 @@ if (isset($_POST['login'])) {
                                 <div class="row">
                                     <div class="col-md-12 login_inner">
                                         <form action="" class="form" method="POST">
-                                        <div class="form-group" id="logform">
+                                        <div class="form-group">
                                             <input type="email" class="form-control input-lg" placeholder="Email Address" id="email" name="email" required>
                                         </div>
-                                        <div class="form-group" id="logform">
+                                        <div class="form-group" >
                                                     <label class="sr-only">Password</label> <input type="password" class="form-control input-lg" id="password" placeholder="Password" name="password" required>
                                                 </div>
-                                                <div class="form-group userchoice" id="logform">
+                                                <div class="form-group userchoice" >
                                                     <label class="radio-label">
                                                         <input type="radio" name="user_type" value="patient" required> Patient
                                                     </label>
