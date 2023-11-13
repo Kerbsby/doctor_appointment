@@ -28,7 +28,7 @@ if(isset($_POST['appointsub'])) {
     $doctorName = $doctorRow['d_FullName'];
 
     // Update the appointment with the doctor's name
-    $sql = "UPDATE appointment SET requestID = '$id', d_name = '$doctorName', appDate = '$date', appTime = '$time', appSymptoms = '$symptoms', appComments = '$comment' WHERE requestID = '$id'";
+    $sql = "UPDATE appointment SET requestID = '$id', d_email = '$doctorEmail', d_name = '$doctorName', appDate = '$date', appTime = '$time', appSymptoms = '$symptoms', appComments = '$comment' WHERE requestID = '$id'";
     $result = mysqli_query($conn, $sql);
     if ($result) {
         header('Location: /Web_Tech/user/userappointment.php');
@@ -62,6 +62,7 @@ if(isset($_POST['appointsub'])) {
                         <tr>
                             <th>Patient Email</th>
                             <th>Doctor Name</th>
+                            <th>Doctor Email</th>
                             <th>Patient Date</th>
                             <th>Patient Time</th>
                             <th>Patient Symptoms</th>
@@ -83,6 +84,7 @@ if(isset($_POST['appointsub'])) {
                         <tr>
                             <td><?= $row['p_email'];?></td>
                             <td><?= $row['d_name'];?></td>
+                            <td><?= $row['d_email'];?></td>
                             <td><?= $row['appDate'];?></td>
                             <td><?= $row['appTime'];?></td>
                             <td><?= $row['appSymptoms'];?></td>
@@ -276,8 +278,8 @@ if(isset($_POST['appoint'])) {
         $doctorName = $doctorRow['d_FullName'];
 
         // Insert appointment with doctor's name
-        $insertQuery = "INSERT INTO appointment (p_email, d_name, appDate, appTime, appSymptoms, appComments) 
-                        VALUES ('$currentUser', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
+        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
 
         $result = mysqli_query($conn, $insertQuery);
 

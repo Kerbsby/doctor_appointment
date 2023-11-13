@@ -22,8 +22,8 @@ if(isset($_POST['appointsub'])) {
         $doctorName = $doctorRow['d_FullName'];
 
         // Insert appointment with doctor's name
-        $insertQuery = "INSERT INTO appointment (p_email, d_name, appDate, appTime, appSymptoms, appComments) 
-                        VALUES ('$currentUser', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
+        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
 
         $result = mysqli_query($conn, $insertQuery);
 

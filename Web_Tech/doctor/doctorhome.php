@@ -137,7 +137,7 @@ while ($row = mysqli_fetch_array($result)) {
                     <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                         <div>
                             <?php
-                            $query = "SELECT * FROM appointment WHERE d_name = '$currentDoc'";
+                            $query = "SELECT * FROM appointment WHERE d_email = '$currentDoc'";
                             $query_run = mysqli_query($conn, $query);
                             if($row = mysqli_num_rows($query_run))
                             {
@@ -155,7 +155,7 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
 
             <div class="row my-5">
-                <h3 class="fs-4 mb-3">All Appointments</h3
+                <h3 class="fs-4 mb-3">All Appointments</h3>
                 <div class="col">
                     <table class="table bg-white rounded shadow-sm  table-hover">
                         <thead>
@@ -172,7 +172,7 @@ while ($row = mysqli_fetch_array($result)) {
                         <tbody>
                         <?php
                         $currentUser = $_SESSION['d_email'];
-                        $sql = "SELECT * FROM appointment WHERE d_name = '$currentUser'";
+                        $sql = "SELECT * FROM appointment WHERE d_email = '$currentUser'";
                         $result = mysqli_query($conn, $sql);
 
                         if ($result) {
@@ -218,7 +218,6 @@ while ($row = mysqli_fetch_array($result)) {
     </div>
 </div>
 <!-- /#page-content-wrapper -->
-</div>
 
 
 
@@ -231,7 +230,7 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
 
             <?php
-            $sql = "SELECT * FROM appointment WHERE d_name = '$currentDoc'";
+            $sql = "SELECT * FROM appointment WHERE d_email = '$currentDoc'";
             $result = mysqli_query($conn, $sql);
 
             if ($result) {
@@ -306,10 +305,10 @@ while ($row = mysqli_fetch_array($result)) {
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="control-label">Status</label>
-                                    <select class="form-control" id="status" name="status"/>
-                                    <option value="process">process</option>
-                                    <option value="ongoing">ongoing</option>
-                                    <option value="done">Cancelled</option>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="process">process</option>
+                                        <option value="ongoing">ongoing</option>
+                                        <option value="done">Cancelled</option>
                                     </select>
                                 </div>
                         </div>
@@ -324,7 +323,7 @@ while ($row = mysqli_fetch_array($result)) {
         </div>
     </div>
 </div>
-</div>
+
 
 
 
