@@ -200,10 +200,10 @@ while ($row = mysqli_fetch_array($result)) {
                         </thead>
                         <tbody>
                         <?php
-                        $sql = "SELECT requestID, p_FullName, a.p_email, d_FullName, d_name, appDate, appTime, status FROM appointment a 
-                        LEFT JOIN patient p ON p.p_email = a.p_email
-                        LEFT JOIN doctor d ON d.d_email = a.d_name";
-                        $result = mysqli_query($conn, $sql);
+                      $sql = "SELECT requestID, p_FullName, a.p_email, d_FullName, d.d_email, appDate, appTime, status FROM appointment a 
+                      LEFT JOIN patient p ON p.p_email = a.p_email
+                      LEFT JOIN doctor d ON d.d_email = a.d_email";
+                      $result = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($result)>0)
                         {
                             while ($row=mysqli_fetch_array($result))
@@ -216,7 +216,7 @@ while ($row = mysqli_fetch_array($result)) {
                                         <td><?php echo $row['p_FullName'];?></td>
                                         <td><?php echo $row['p_email'];?></td>
                                         <td><?php echo $row['d_FullName'];?></td>
-                                        <td><?php echo $row['d_name'];?></td>
+                                        <td><?php echo $row['d_email'];?></td>
                                         <td><?php echo $row['appDate'];?></td>
                                         <td><?php echo $row['appTime'];?></td>
                                         <td><?php echo $row['status'];?></td>
