@@ -92,6 +92,7 @@ echo 'Password Not Matched.';
     <script src="https://kit.fontawesome.com/bf1c643ee2.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/Web_Tech/css/style.css">
+    <link rel="stylesheet" href="/Web_Tech/css/admin.css">
     <link rel="stylesheet" href="/Web_Tech/css/dochome.css">
     <link rel="stylesheet" href="/Web_Tech/css/reglog.css">
     <title>MedBook</title>
@@ -110,8 +111,6 @@ echo 'Password Not Matched.';
         <div class="list-group list-group-flush my-3">
             <a href="adminhome.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                     class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a href="adminapp.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-check-to-slot me-2"></i>Appointment</a>
             <a href="adminpatient.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fas fa-hospital-user me-2"></i>Patient List</a>
             <a href="admindoc.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
@@ -249,24 +248,19 @@ echo 'Password Not Matched.';
 
 
                 <div class="row my-5">
-                <h3 class="fs-4 mb-3">Patient List</h3>
                     <div class="col-12 col-md-5">
                         <div class="form-group mb-0">
                             <button type="submit" class="btn medilife-btn" id="medilife" data-bs-toggle="modal" data-bs-target="#addpatient">Patient <span>+</span></button>
                         </div>
                     </div>
-                    <div class="row my-4">
-                <div class="col text-center">
+                    <div class="patient_list row my-4">
+                <div class="col-10 text-center">
                     <form class="form" role="form" method="POST" accept-charset="UTF-8">
                     <table class="table bg-white rounded shadow-sm  table-hover">
                         <thead>
                         <tr>
                             <th scope="col" width="50">Patient Name</th>
                             <th scope="col" width="50">Patient Gender</th>
-                            <th scope="col" width="30">Patient Email</th>
-                            <th scope="col" width="50">Patient Number</th>
-                            <th scope="col" width="50">Patient DOB</th>
-                            <th scope="col" width="50">Patient Address</th>
                             <th scope="col" width="50">Action</th>
                         </tr>
                         </thead>
@@ -282,10 +276,6 @@ echo 'Password Not Matched.';
                                     <tr>
                                         <td><?php echo $row['p_FullName'] ?></td>
                                         <td><?php echo $row['p_gender'] ?></td>
-                                        <td><?php echo $row['p_email'] ?></td>
-                                        <td><?php echo $row['p_number'] ?></td>
-                                        <td><?php echo $row['p_DOB'] ?></td>
-                                        <td><?php echo $row['p_address'] ?></td>
                                         <td>
                                             <button type="button" id="act_button" class="btn btn-warning btn-xs update" data-bs-toggle="modal" data-bs-target="#myUpdate"><a class="glyphicon glyphicon-edit" style="text-decoration: none;" href="?update=<?php echo $row['patientID']; ?>" title="Edit">Edit</a></button>
                                             <button type="button" name="delete" id="act_button" class="btn btn-warning btn-xs update"><a class="glyphicon glyphicon-edit" style="text-decoration: none;" href="/Web_Tech/admin/adminpatient.php?delete=<?php echo $row['patientID']; ?>" title="Edit">Delete</a></button>

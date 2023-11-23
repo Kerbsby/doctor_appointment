@@ -8,6 +8,11 @@
     --second-bg-color: #c1efde;
 }
 
+
+.top-nav{
+    background-color: #092032;
+}
+
 #wrapper-header{
     background-color: #092032;
 }
@@ -38,17 +43,7 @@
     border-radius: 100%;
 }
 
-#wrapper {
-    overflow-x: hidden;
-    background-image: linear-gradient(
-            to right,
-            #86f3f6,
-            #70e8ec,
-            #80e0e8,
-            #b3e5ef,
-            #ddfaef
-    );
-}
+
 #sidebar-wrapper {
     min-height: 100vh;
     margin-left: -15rem;
@@ -75,6 +70,7 @@
 }
 
 #page-content-wrapper {
+    background-color: white;
     min-width: 100vw;
 }
 
@@ -113,12 +109,3 @@
     }
 }
 
-
-                      /*<div class="form-group">
-							<label for="description" class="control-label">Active</label>
-							<select class="form-control" id="status" name="status"/>
-								<option value="Active">Active</option>
-								<option value="Completed">Completed</option>
-								<option value="Cancelled">Cancelled</option>
-							</select>
-						</div>

@@ -4,8 +4,7 @@
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 session_start();
-
-if(isset($_POST['appointsub'])) {
+if (isset($_POST['appointsub'])) {
     $doctorEmail = mysqli_real_escape_string($conn, $_POST['doctor']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $time = mysqli_real_escape_string($conn, $_POST['time']);
@@ -13,34 +12,52 @@ if(isset($_POST['appointsub'])) {
     $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $currentUser = $_SESSION['email'];
 
-    // Fetch the doctor's name based on the selected email
-    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
-    $doctorResult = mysqli_query($conn, $doctorQuery);
+    // Fetch already booked dates for the selected doctor
+    $bookedDatesQuery = "SELECT DISTINCT appDate FROM appointment WHERE d_email = '$doctorEmail'";
+    $bookedDatesResult = mysqli_query($conn, $bookedDatesQuery);
 
-    if ($doctorResult) {
-        $doctorRow = mysqli_fetch_assoc($doctorResult);
-        $doctorName = $doctorRow['d_FullName'];
+    if ($bookedDatesResult) {
+        // Store booked dates in an array
+        $bookedDates = [];
+        while ($row = mysqli_fetch_assoc($bookedDatesResult)) {
+            $bookedDates[] = $row['appDate'];
+        }
 
-        // Insert appointment with doctor's name
-        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
-                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
-
-        $result = mysqli_query($conn, $insertQuery);
-
-        if ($result) {
-            header("Location: /Web_Tech/user/userhome.php?d_email=$doctorEmail");
+        // Check if the selected date is booked
+        if (in_array($date, $bookedDates)) {
+            echo "The selected date is not available. Please choose another date.";
         } else {
-            echo "Error: " . mysqli_error($conn); 
+            // Fetch the doctor's name based on the selected email
+            $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
+            $doctorResult = mysqli_query($conn, $doctorQuery);
+
+            if ($doctorResult) {
+                $doctorRow = mysqli_fetch_assoc($doctorResult);
+                $doctorName = $doctorRow['d_FullName'];
+
+                // Insert appointment with doctor's name
+                $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                                VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
+
+                $result = mysqli_query($conn, $insertQuery);
+
+                if ($result) {
+                    header("Location: /Web_Tech/user/userhome.php?d_email=$doctorEmail");
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                }
+            } else {
+                echo "Error: " . mysqli_error($conn);
+            }
         }
     } else {
-        echo "Error: " . mysqli_error($conn); 
+        echo "Error: " . mysqli_error($conn);
     }
 }
 ?>
 
-
 <?php
-include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
+include 'C:\xampp\htdocs\Web_Tech\doctor\doctorheader.php';
 ?>
 
 <?php

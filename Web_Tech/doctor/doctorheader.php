@@ -22,12 +22,13 @@ while ($row = mysqli_fetch_array($result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/dochome.css">
+    <link rel="stylesheet" type="text/css" href="/Web_Tech/css/header.css">
     <title>MedBook</title>
 </head>
 
 <body>
 
-<div class="top-nav" id="home" style="background-color: black">
+<div class="top-nav" id="home" >
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-auto">
@@ -49,7 +50,7 @@ while ($row = mysqli_fetch_array($result)) {
     </div>
 </div>
 
-<div class="container-fluid" id="wrapper-header">
+<div class="container-fluid" id="wrapper-header" style="background-color: black">
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

@@ -42,14 +42,10 @@ while ($row = mysqli_fetch_array($result)) {
         <div class="list-group list-group-flush my-3">
             <a href="adminhome.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                     class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a href="adminapp.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-check-to-slot me-2"></i>Appointment</a>
             <a href="adminpatient.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fas fa-hospital-user me-2"></i>Patient List</a>
             <a href="admindoc.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fas fa-hospital-user me-2"></i>Doctor List</a>
-            <a href="doctorprofile.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                    class="fas fa-user me-2"></i>Profile</a>
             <a href="/Web_Tech/user/userlogout.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                     class="fas fa-power-off me-2" style="color: #c72a2a;"></i>Logout</a>
 
@@ -157,104 +153,15 @@ while ($row = mysqli_fetch_array($result)) {
                             <i class="fas fa-address-card fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>
                     </div>
-
-
-                    <!--appointments-->
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <?php
-                                $query = "SELECT requestID FROM appointment ORDER BY requestID";
-                                $query_run = mysqli_query($conn, $query);
-                                if($row = mysqli_num_rows($query_run))
-                                {
-                                    echo '<h3 class="fs-2">'.$row.'</h3>';
-                                }
-                                else{
-                                    echo '<h3 class="fs-2">No Data</h3>';
-                                }
-                                ?>
-                                <p class="fs-5" style="color:#046167;"><b>All appointments</b></p>
-                            </div>
-                            <i class="fas fa-calendar-check fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-            </div>
-
-
-
-            <div class="row my-5">
-                <h3 class="fs-4 mb-3">All Appointments</h3>
-                <div class="col text-center">
-                    <table class="table bg-white rounded shadow-sm  table-hover">
-                        <thead>
-                        <tr class="text-center">
-                            <th  scope="col" width="50">Patient Name</th>
-                            <th  scope="col" width="50">Patient Email</th>
-                            <th scope="col" width="40">Doctor Name</th>
-                            <th scope="col" width="40">Doctor Email</th>
-                            <th scope="col" width="50">Appointment Date</th>
-                            <th scope="col" width="30">Appointment Time</th>
-                            <th scope="col" width="30">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                      $sql = "SELECT requestID, p_FullName, a.p_email, d_FullName, d.d_email, appDate, appTime, status FROM appointment a 
-                      LEFT JOIN patient p ON p.p_email = a.p_email
-                      LEFT JOIN doctor d ON d.d_email = a.d_email";
-                      $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result)>0)
-                        {
-                            while ($row=mysqli_fetch_array($result))
-                            {
-                        ?>
-
-
-                                    <tr class="text-center">
-
-                                        <td><?php echo $row['p_FullName'];?></td>
-                                        <td><?php echo $row['p_email'];?></td>
-                                        <td><?php echo $row['d_FullName'];?></td>
-                                        <td><?php echo $row['d_email'];?></td>
-                                        <td><?php echo $row['appDate'];?></td>
-                                        <td><?php echo $row['appTime'];?></td>
-                                        <td><?php echo $row['status'];?></td>
-                                    </tr>
-                                    <?php
-                                    }
-                                    }
-                                    else{
-                                    ?>
-
-
-                                <tr>
-                                    <td style=" text-transform: capitalize;" class ="text-center" colspan="9"><h3>no items added</h3></td>
-                                </tr>
-                        <?php
-                           }
-                        ?>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-
                 <div class="row my-5">
-                <h3 class="fs-4 mb-3">Patient List</h3>
-                <div class="col text-center">
+                <h3 class="fs-3 mb-3">Patient List</h3>
+                <div class="col-7 text-center">
                     <form class="form" role="form" method="POST" accept-charset="UTF-8">
                         <table class="table bg-white rounded shadow-sm  table-hover">
                             <thead>
                             <tr>
                                 <th scope="col" width="50">Patient Name</th>
                                 <th scope="col" width="50">Patient Gender</th>
-                                <th scope="col" width="30">Patient Email</th>
-                                <th scope="col" width="50">Patient Number</th>
-                                <th scope="col" width="50">Patient DOB</th>
-                                <th scope="col" width="50">Patient Address</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -269,10 +176,6 @@ while ($row = mysqli_fetch_array($result)) {
                                         <tr>
                                             <td><?php echo $row['p_FullName'] ?></td>
                                             <td><?php echo $row['p_gender'] ?></td>
-                                            <td><?php echo $row['p_email'] ?></td>
-                                            <td><?php echo $row['p_number'] ?></td>
-                                            <td><?php echo $row['p_DOB'] ?></td>
-                                            <td><?php echo $row['p_address'] ?></td>
                                         </tr>
                                         <?php
 
@@ -288,18 +191,14 @@ while ($row = mysqli_fetch_array($result)) {
 
 
                 <div class="row my-5">
-                    <h3 class="fs-4 mb-3">Doctor List</h3>
-                    <div class="col text-center">
+                    <h3 class="fs-3 mb-3">Doctor List</h3>
+                    <div class="col-7 text-center">
                         <form class="form" role="form" method="POST" accept-charset="UTF-8">
                             <table class="table bg-white rounded shadow-sm  table-hover">
                                 <thead>
                                 <tr>
                                     <th scope="col" width="50">Doctor Name</th>
                                     <th scope="col" width="50">Doctor Gender</th>
-                                    <th scope="col" width="30">Doctor Email</th>
-                                    <th scope="col" width="50">Doctor Number</th>
-                                    <th scope="col" width="50">Doctor DOB</th>
-                                    <th scope="col" width="50">Doctor Address</th>
                                     <th scope="col" width="50">Specialize</th>
                                 </tr>
                                 </thead>
@@ -315,10 +214,6 @@ while ($row = mysqli_fetch_array($result)) {
                                             <tr>
                                                 <td><?php echo $row['d_FullName'] ?></td>
                                                 <td><?php echo $row['d_gender'] ?></td>
-                                                <td><?php echo $row['d_email'] ?></td>
-                                                <td><?php echo $row['d_number'] ?></td>
-                                                <td><?php echo $row['d_DOB'] ?></td>
-                                                <td><?php echo $row['d_address'] ?></td>
                                                 <td><?php echo $row['d_specialize'] ?></td>
                                             </tr>
                                             <?php
