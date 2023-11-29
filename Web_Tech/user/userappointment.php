@@ -12,29 +12,7 @@ if(isset($_GET['delete'])){
 
 ?>
 
-<?php
-if(isset($_POST['appointsub'])) {
-    $id = $_GET['update'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
-    $doctorEmail = $_POST['doctor']; // Assuming $_POST['doctor'] contains the doctor's email
-    $symptoms = $_POST['symptom'];
-    $comment = $_POST['comment'];
 
-    // Fetch the doctor's name based on the given doctor's email
-    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
-    $doctorResult = mysqli_query($conn, $doctorQuery);
-    $doctorRow = mysqli_fetch_assoc($doctorResult);
-    $doctorName = $doctorRow['d_FullName'];
-
-    // Update the appointment with the doctor's name
-    $sql = "UPDATE appointment SET requestID = '$id', d_email = '$doctorEmail', d_name = '$doctorName', appDate = '$date', appTime = '$time', appSymptoms = '$symptoms', appComments = '$comment' WHERE requestID = '$id'";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        header('Location: /Web_Tech/user/userappointment.php');
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +25,7 @@ if(isset($_POST['appointsub'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/style.css">
     <link rel="stylesheet" type="text/css" href="/Web_Tech/css/reglog.css">
+    <link rel="stylesheet" type="text/css" href="/Web_Tech/css/header.css">
 </head>
 
 <body>
@@ -77,22 +56,26 @@ if(isset($_POST['appointsub'])) {
 
                     if ($result) {
                     if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_array($result)) {
-
+                  
                     ?>
                     <tbody>
+                    <?php
+                      while ($row = mysqli_fetch_array($result)) {
+                        ?>
+                    
                         <tr>
                             <td><?= $row['p_email'];?></td>
                             <td><?= $row['d_name'];?></td>
                             <td><?= $row['d_email'];?></td>
                             <td><?= $row['appDate'];?></td>
-                            <td><?= $row['appTime'];?></td>
+                            <td><?= date('h:i A', strtotime($row['appTime']));?></td>
                             <td><?= $row['appSymptoms'];?></td>
                             <td><?= $row['appComments'];?></td>
                             <td>
-                                <button type="button" name="view" id="act_button" class="btn btn-info btn-xs view" data-bs-toggle="modal" data-bs-target="#patientDetails"><a class="glyphicon glyphicon-file" style="text-decoration: none;" title="View">View</a></button>
-                                <button type="button" name="update" id="edit_button" class="btn btn-warning btn-xs update" data-bs-toggle="modal" data-bs-target="#myUpdate"><a class="glyphicon glyphicon-edit"  style="text-decoration: none;" href="?update=<?php echo $row['requestID']; ?>">Edit</a></button>
-                                <button type="button" name="delete" id="act_button" class="btn btn-warning btn-xs delete"><a class="glyphicon glyphicon-edit" style="text-decoration: none;" href="/Web_Tech/user/userappointment.php?delete=<?php echo $row['requestID']; ?>" title="Edit">Delete</a></button>
+                                <div class="appointedit-btn">
+                                <a type="button" name="update" id="edit_button" class="btn btn-warning btn-xs update" style="text-decoration: none;" href="appointedit.php?update=<?php echo $row['requestID']; ?>">Edit</a>                                   
+                                <a class="btn btn-warning btn-xs delete" href="/Web_Tech/user/userappointment.php?delete=<?php echo $row['requestID']; ?>" title="Edit">Delete</a>
+                                </div>
                             </td>
                         </tr>
                     <?php
@@ -112,49 +95,8 @@ if(isset($_POST['appointsub'])) {
     </div>
     
 
-    <!-- Modals (Patient Details and Update Appointment) go here -->
-    <div id="patientDetails" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Patient Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <?php
-            $currentUser = $_SESSION['email'];
-            $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
-            $result = mysqli_query($conn, $sql);
 
-            if ($result) {
-            if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_array($result)) {
-
-            ?>
-            <div class="modal-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Patient Information</div>
-                    <div class="panel-body">
-                        <label>Patient Name:</label> <?php echo $row['p_FullName'] ?><br>
-                        <label>Gender:</label> <?php echo $row['p_gender'] ?><br>
-                        <label>Email:</label> <?php echo $row['p_email'] ?><br>
-                        <label>Contact Number:</label> <?php echo $row['p_number'] ?><br>
-                        <label>Birth Date:</label> <?php echo $row['p_DOB'] ?><br>
-                        <label>Contact Number:</label> <?php echo $row['p_address'] ?><br>
-                    </div>
-                </div>
-            </div>
-                    <?php
-
-                    }
-                    }
-                    }
-                    ?>
-
-        </div>
-    </div>
-</div>
-
-<?php
+    <?php
 
 $currentUser = $_SESSION['email'];
 $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
@@ -261,7 +203,7 @@ while ($row = mysqli_fetch_array($result)) {
 <!--Add new apppointment-->
 <?php
 
-if(isset($_POST['appoint'])) {
+if (isset($_POST['appoint'])) {
     $doctorEmail = mysqli_real_escape_string($conn, $_POST['doctor']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
     $time = mysqli_real_escape_string($conn, $_POST['time']);
@@ -269,27 +211,126 @@ if(isset($_POST['appoint'])) {
     $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $currentUser = $_SESSION['email'];
 
-    // Fetch the doctor's name based on the selected email
-    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
-    $doctorResult = mysqli_query($conn, $doctorQuery);
+    // Retrieve the start time and end time for the selected doctor
+    $doctorTimeQuery = "SELECT start_time, end_time FROM doctor WHERE d_email = '$doctorEmail'";
+    $doctorTimeResult = mysqli_query($conn, $doctorTimeQuery);
 
-    if ($doctorResult) {
-        $doctorRow = mysqli_fetch_assoc($doctorResult);
-        $doctorName = $doctorRow['d_FullName'];
+    if ($doctorTimeResult) {
+        $doctorTimeRow = mysqli_fetch_assoc($doctorTimeResult);
+        $startTime = $doctorTimeRow['start_time'];
+        $endTime = $doctorTimeRow['end_time'];
 
-        // Insert appointment with doctor's name
-        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
-                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
-
-        $result = mysqli_query($conn, $insertQuery);
-
-        if ($result) {
-            header("Location: /Web_Tech/user/userappointment.php");
+        // Check if the selected time is within the specified range
+        if ($time < $startTime || $time > $endTime) {
+            echo '<style>';
+            echo '.modal-alert {';
+            echo '    display: block;';
+            echo '    position: fixed;';
+            echo '    top: 20%;';
+            echo '    left: 50%;';
+            echo '    transform: translate(-50%, -50%);';
+            echo '    padding: 20px;';
+            echo '    background-color: #ff6666;'; // Updated to a higher and red color
+            echo '    border: 1px solid #f00;';
+            echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+            echo '    z-index: 9999;'; // Ensure it appears above other elements
+            echo '}';
+            echo '.close-button {';
+            echo '    position: absolute;';
+            echo '    top: 5px;';
+            echo '    right: 10px;';
+            echo '    font-size: 20px;';
+            echo '    cursor: pointer;';
+            echo '}';
+            echo '</style>';
+        
+            echo '<div class="modal-alert">';
+            echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+            echo '    <p>The selected time is not available. Please choose another time.</p>';
+            echo '</div>';
+        
+            echo '<script>';
+            echo 'function closeAlert() {';
+            echo '    var alertBox = document.querySelector(".modal-alert");';
+            echo '    if (alertBox) { alertBox.remove(); }';
+            echo '}';
+            echo '</script>';
         } else {
-            echo "Error: " . mysqli_error($conn); 
+            // Check for booked dates
+            $bookedDatesQuery = "SELECT DISTINCT appDate FROM appointment WHERE d_email = '$doctorEmail'";
+            $bookedDatesResult = mysqli_query($conn, $bookedDatesQuery);
+
+            if ($bookedDatesResult) {
+                $bookedDates = [];
+                while ($row = mysqli_fetch_assoc($bookedDatesResult)) {
+                    $bookedDates[] = $row['appDate'];
+                }
+
+                if (in_array($date, $bookedDates)) {
+                    echo '<style>';
+                    echo '.modal-alert {';
+                    echo '    display: block;';
+                    echo '    position: fixed;';
+                    echo '    top: 20%;';
+                    echo '    left: 50%;';
+                    echo '    transform: translate(-50%, -50%);';
+                    echo '    padding: 20px;';
+                    echo '    background-color: #ff6666;'; // Updated to a higher and red color
+                    echo '    border: 1px solid #f00;';
+                    echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+                    echo '    z-index: 9999;'; // Ensure it appears above other elements
+                    echo '}';
+                    echo '.close-button {';
+                    echo '    position: absolute;';
+                    echo '    top: 5px;';
+                    echo '    right: 10px;';
+                    echo '    font-size: 20px;';
+                    echo '    cursor: pointer;';
+                    echo '}';
+                    echo '</style>';
+                
+                    echo '<div class="modal-alert">';
+                    echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+                    echo '    <p>The selected date is not available. Please choose another date.</p>';
+                    echo '</div>';
+                
+                    echo '<script>';
+                    echo 'function closeAlert() {';
+                    echo '    var alertBox = document.querySelector(".modal-alert");';
+                    echo '    if (alertBox) { alertBox.remove(); }';
+                    echo '}';
+                    echo '</script>';
+                } else {
+                    // Fetch the doctor's name based on the selected email
+                    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
+                    $doctorResult = mysqli_query($conn, $doctorQuery);
+
+                    if ($doctorResult) {
+                        $doctorRow = mysqli_fetch_assoc($doctorResult);
+                        $doctorName = $doctorRow['d_FullName'];
+
+                        // Insert appointment with doctor's name
+                        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
+
+                        $result = mysqli_query($conn, $insertQuery);
+
+                        if ($result) {
+                        
+                            header("Location: /Web_Tech/user/userappointment.php");
+                        } else {
+                            echo "Error: " . mysqli_error($conn);
+                        }
+                    } else {
+                        echo "Error: " . mysqli_error($conn);
+                    }
+                }
+            } else {
+                echo "Error: " . mysqli_error($conn);
+            }
         }
     } else {
-        echo "Error: " . mysqli_error($conn); 
+        echo "Error: " . mysqli_error($conn);
     }
 }
 ?>

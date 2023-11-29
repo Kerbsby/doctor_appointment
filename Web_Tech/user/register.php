@@ -26,16 +26,65 @@ if(isset($_POST['signup'])) {
             $sql = "INSERT INTO patient(p_FullName, p_email, p_number, p_address, p_password, p_DOB, p_gender) VALUES ('$pFullName', '$pEmail', '$pNumber', '$pAddress', '$password', '$DOB', '$pGender')";
             $result = mysqli_query($conn, $sql);
             if($result){
-                echo 'Registered Successfully';
+                echo '<script>';
+                echo 'function createAlert(message) {';
+                echo '    var alertBox = document.createElement("div");';
+                echo '    alertBox.className = "alert";';
+                echo '    alertBox.innerHTML = `<span class="close-button" onclick="closeAlert()">&times;</span><p>${message}</p>`;';
+                echo '    alertBox.style.backgroundColor = "#66ff66";';  
+                echo '    document.body.appendChild(alertBox);';
+                echo '}';
+                echo 'function closeAlert() {';
+                echo '    var alertBox = document.querySelector(".alert");';
+                echo '    if (alertBox) { alertBox.remove(); }';
+                echo '}';
+                echo 'createAlert("Registered Successfully");';
+                echo '</script>';
             } else{
-                echo 'Woops! Something went wrong.';
+                echo '<script>';
+                echo 'function createAlert(message) {';
+                echo '    var alertBox = document.createElement("div");';
+                echo '    alertBox.className = "alert";';
+                echo '    alertBox.innerHTML = `<span class="close-button" onclick="closeAlert()">&times;</span><p>${message}</p>`;';
+                echo '    document.body.appendChild(alertBox);';
+                echo '}';
+                echo 'function closeAlert() {';
+                echo '    var alertBox = document.querySelector(".alert");';
+                echo '    if (alertBox) { alertBox.remove(); }';
+                echo '}';
+                echo 'createAlert("Woops! Something went wrong.");';
+                echo '</script>';
             }
         } else{
-            echo 'Woops! Email already exists.';
+            echo '<script>';
+            echo 'function createAlert(message) {';
+            echo '    var alertBox = document.createElement("div");';
+            echo '    alertBox.className = "alert";';
+            echo '    alertBox.innerHTML = `<span class="close-button" onclick="closeAlert()">&times;</span><p>${message}</p>`;';
+            echo '    document.body.appendChild(alertBox);';
+            echo '}';
+            echo 'function closeAlert() {';
+            echo '    var alertBox = document.querySelector(".alert");';
+            echo '    if (alertBox) { alertBox.remove(); }';
+            echo '}';
+            echo 'createAlert("Woops! Email already exists.");';
+            echo '</script>';
         }
 
     } else{
-        echo 'Password Not Matched.';
+        echo '<script>';
+        echo 'function createAlert(message) {';
+        echo '    var alertBox = document.createElement("div");';
+        echo '    alertBox.className = "alert";';
+        echo '    alertBox.innerHTML = `<span class="close-button" onclick="closeAlert()">&times;</span><p>${message}</p>`;';
+        echo '    document.body.appendChild(alertBox);';
+        echo '}';
+        echo 'function closeAlert() {';
+        echo '    var alertBox = document.querySelector(".alert");';
+        echo '    if (alertBox) { alertBox.remove(); }';
+        echo '}';
+        echo 'createAlert("Password Not Matched.");';
+        echo '</script>';
     }
 }
 ?>

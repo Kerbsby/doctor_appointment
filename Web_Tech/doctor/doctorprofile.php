@@ -20,10 +20,12 @@ if(isset($_POST['submit'])) {
     $year = $_POST['year'];
     $DOB = $year . "-" . $month . "-" . $day;
     $gender = $_POST['dGender'];
+    $start = $_POST['start_time'];
+    $end = $_POST['end_time'];
 
 
 
-    $sql = "UPDATE doctor SET doctorID =  '$id', d_FullName = '$fullname', d_email = '$email', d_number = '$number', d_address = '$address', d_DOB = '$DOB', d_gender = '$gender', d_specialize = '$comments' WHERE doctorID = '$id'";
+    $sql = "UPDATE doctor SET doctorID =  '$id', d_FullName = '$fullname', d_email = '$email', d_number = '$number', d_address = '$address', d_DOB = '$DOB', d_gender = '$gender', d_specialize = '$comments', start_time = '$start', end_time = '$end' WHERE doctorID = '$id'";
     $result = mysqli_query($conn, $sql);
     if ($result) {
         header('Location: /Web_Tech/doctor/doctorprofile.php');
@@ -157,15 +159,14 @@ while ($row = mysqli_fetch_array($result)) {
 
                                             <table class="table table-user-information" align="center">
                                                 <tbody>
-
-
-                                                <tr>
-                                                    <td>Doctor ID</td>
-                                                    <td><?php echo $row['doctorID']; ?></td>
-                                                </tr>
                                                 <tr>
                                                     <td>Doctor FullName</td>
                                                     <td><?php echo $row['d_FullName']; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td><?php echo $row['d_email']; ?>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Address</td>
@@ -177,8 +178,8 @@ while ($row = mysqli_fetch_array($result)) {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Email</td>
-                                                    <td><?php echo $row['d_email']; ?>
+                                                    <td>Specialization</td>
+                                                    <td><?php echo $row['d_specialize']; ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -191,9 +192,8 @@ while ($row = mysqli_fetch_array($result)) {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Specialize</td>
-                                                    <td><?php echo $row['d_specialize']; ?>
-                                                    </td>
+                                                    <td>Work Hours</td>
+                                                        <td><?php echo date("h:i A", strtotime($row['start_time'])) . " - " . date("h:i A", strtotime($row['end_time'])); ?></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -358,6 +358,19 @@ while ($row = mysqli_fetch_array($result)) {
                                             </select>
                                         </div>
                                     </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Start Time</td>
+                                <td>
+                                    <input type="time" name="start_time" id="start" class="form-control input-lg" required />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>End Time</td>
+                                <td>
+                                <input type="time" name="end_time" id="end" class="form-control input-lg" required />
                                 </td>
                             </tr>
 

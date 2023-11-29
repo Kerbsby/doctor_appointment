@@ -134,17 +134,25 @@ p{
 }
 
 
-.set-section a{
-    text-decoration: none;
-    text-transform: uppercase;
+
+
+.set-section .input-group-btn .btn{
+    margin-top: 1%;
+}
+
+.input-group-btn .btn-search{
+    border-radius: 0%;
     color: white;
-    transition: 0.5s ease;
+    background-color: #081f3e;
 }
 
 
-.set-section a:hover{
-    color:#081f3e;
+.set-section .search-input:focus{
+    outline: none;
+    -webkit-box-shadow:none;
+    box-shadow: none;
 }
+
 
 
 /*appointment*/

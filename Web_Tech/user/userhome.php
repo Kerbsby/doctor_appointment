@@ -1,9 +1,69 @@
-
-
-
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 session_start();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_search'])) {
+    $searchTerm = mysqli_real_escape_string($conn, $_POST['search']);
+    
+
+    $searchQuery = "SELECT * FROM doctor WHERE d_FullName LIKE '%$searchTerm%' OR d_specialize LIKE '%$searchTerm%'";
+    $searchResult = mysqli_query($conn, $searchQuery);
+
+    if (!$searchResult) {
+        die('Error in SQL query: ' . mysqli_error($conn));
+    }
+
+    $searchResultsArray = [];
+
+    while ($doctor = mysqli_fetch_assoc($searchResult)) {
+        $searchResultsArray[] = $doctor;
+    }
+
+    if (!empty($searchResultsArray)) {
+     
+        header("Location: /Web_Tech/user/doctorpage.php?searchTerm=" . urlencode($searchTerm) . "&results=" . urlencode(json_encode($searchResultsArray)) . "&fromUserHome=true");
+        exit(); 
+    } else {
+        echo '<style>';
+    echo '.modal-alert {';
+    echo '    display: block;';
+    echo '    position: fixed;';
+    echo '    top: 20%;';
+    echo '    left: 50%;';
+    echo '    transform: translate(-50%, -50%);';
+    echo '    padding: 20px;';
+    echo '    background-color: #ff6666;'; // Updated to a higher and red color
+    echo '    border: 1px solid #f00;';
+    echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+    echo '    z-index: 9999;'; // Ensure it appears above other elements
+    echo '}';
+    echo '.close-button {';
+    echo '    position: absolute;';
+    echo '    top: 5px;';
+    echo '    right: 10px;';
+    echo '    font-size: 20px;';
+    echo '    cursor: pointer;';
+    echo '}';
+    echo '</style>';
+
+    echo '<div class="modal-alert">';
+    echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+    echo '    <p>No search results found for: ' . $searchTerm . '</p>';
+    echo '</div>';
+
+    echo '<script>';
+    echo 'function closeAlert() {';
+    echo '    var alertBox = document.querySelector(".modal-alert");';
+    echo '    if (alertBox) { alertBox.remove(); }';
+    echo '}';
+    echo '</script>';
+    }
+}
+
+
+?>
+
+<?php
 if (isset($_POST['appointsub'])) {
     $doctorEmail = mysqli_real_escape_string($conn, $_POST['doctor']);
     $date = mysqli_real_escape_string($conn, $_POST['date']);
@@ -12,39 +72,150 @@ if (isset($_POST['appointsub'])) {
     $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $currentUser = $_SESSION['email'];
 
-    // Fetch already booked dates for the selected doctor
-    $bookedDatesQuery = "SELECT DISTINCT appDate FROM appointment WHERE d_email = '$doctorEmail'";
-    $bookedDatesResult = mysqli_query($conn, $bookedDatesQuery);
+    // Retrieve the start time and end time for the selected doctor
+    $doctorTimeQuery = "SELECT start_time, end_time FROM doctor WHERE d_email = '$doctorEmail'";
+    $doctorTimeResult = mysqli_query($conn, $doctorTimeQuery);
 
-    if ($bookedDatesResult) {
-        // Store booked dates in an array
-        $bookedDates = [];
-        while ($row = mysqli_fetch_assoc($bookedDatesResult)) {
-            $bookedDates[] = $row['appDate'];
-        }
+    if ($doctorTimeResult) {
+        $doctorTimeRow = mysqli_fetch_assoc($doctorTimeResult);
+        $startTime = $doctorTimeRow['start_time'];
+        $endTime = $doctorTimeRow['end_time'];
 
-        // Check if the selected date is booked
-        if (in_array($date, $bookedDates)) {
-            echo "The selected date is not available. Please choose another date.";
+        // Check if the selected time is within the specified range
+        if ($time < $startTime || $time > $endTime) {
+            echo '<style>';
+            echo '.modal-alert {';
+            echo '    display: block;';
+            echo '    position: fixed;';
+            echo '    top: 20%;';
+            echo '    left: 50%;';
+            echo '    transform: translate(-50%, -50%);';
+            echo '    padding: 20px;';
+            echo '    background-color: #ff6666;'; // Updated to a higher and red color
+            echo '    border: 1px solid #f00;';
+            echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+            echo '    z-index: 9999;'; // Ensure it appears above other elements
+            echo '}';
+            echo '.close-button {';
+            echo '    position: absolute;';
+            echo '    top: 5px;';
+            echo '    right: 10px;';
+            echo '    font-size: 20px;';
+            echo '    cursor: pointer;';
+            echo '}';
+            echo '</style>';
+        
+            echo '<div class="modal-alert">';
+            echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+            echo '    <p>The selected time is not available. Please choose another time.</p>';
+            echo '</div>';
+        
+            echo '<script>';
+            echo 'function closeAlert() {';
+            echo '    var alertBox = document.querySelector(".modal-alert");';
+            echo '    if (alertBox) { alertBox.remove(); }';
+            echo '}';
+            echo '</script>';
         } else {
-            // Fetch the doctor's name based on the selected email
-            $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
-            $doctorResult = mysqli_query($conn, $doctorQuery);
+            // Check for booked dates
+            $bookedDatesQuery = "SELECT DISTINCT appDate FROM appointment WHERE d_email = '$doctorEmail'";
+            $bookedDatesResult = mysqli_query($conn, $bookedDatesQuery);
 
-            if ($doctorResult) {
-                $doctorRow = mysqli_fetch_assoc($doctorResult);
-                $doctorName = $doctorRow['d_FullName'];
+            if ($bookedDatesResult) {
+                $bookedDates = [];
+                while ($row = mysqli_fetch_assoc($bookedDatesResult)) {
+                    $bookedDates[] = $row['appDate'];
+                }
 
-                // Insert appointment with doctor's name
-                $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
-                                VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
-
-                $result = mysqli_query($conn, $insertQuery);
-
-                if ($result) {
-                    header("Location: /Web_Tech/user/userhome.php?d_email=$doctorEmail");
+                if (in_array($date, $bookedDates)) {
+                    echo '<style>';
+                    echo '.modal-alert {';
+                    echo '    display: block;';
+                    echo '    position: fixed;';
+                    echo '    top: 20%;';
+                    echo '    left: 50%;';
+                    echo '    transform: translate(-50%, -50%);';
+                    echo '    padding: 20px;';
+                    echo '    background-color: #ff6666;'; // Updated to a higher and red color
+                    echo '    border: 1px solid #f00;';
+                    echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+                    echo '    z-index: 9999;'; // Ensure it appears above other elements
+                    echo '}';
+                    echo '.close-button {';
+                    echo '    position: absolute;';
+                    echo '    top: 5px;';
+                    echo '    right: 10px;';
+                    echo '    font-size: 20px;';
+                    echo '    cursor: pointer;';
+                    echo '}';
+                    echo '</style>';
+                
+                    echo '<div class="modal-alert">';
+                    echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+                    echo '    <p>The selected date is not available. Please choose another date.</p>';
+                    echo '</div>';
+                
+                    echo '<script>';
+                    echo 'function closeAlert() {';
+                    echo '    var alertBox = document.querySelector(".modal-alert");';
+                    echo '    if (alertBox) { alertBox.remove(); }';
+                    echo '}';
+                    echo '</script>';
                 } else {
-                    echo "Error: " . mysqli_error($conn);
+                    // Fetch the doctor's name based on the selected email
+                    $doctorQuery = "SELECT d_FullName FROM doctor WHERE d_email = '$doctorEmail'";
+                    $doctorResult = mysqli_query($conn, $doctorQuery);
+
+                    if ($doctorResult) {
+                        $doctorRow = mysqli_fetch_assoc($doctorResult);
+                        $doctorName = $doctorRow['d_FullName'];
+
+                        // Insert appointment with doctor's name
+                        $insertQuery = "INSERT INTO appointment (p_email, d_email, d_name, appDate, appTime, appSymptoms, appComments) 
+                                        VALUES ('$currentUser', '$doctorEmail', '$doctorName', '$date', '$time', '$symptoms', '$comment')";
+
+                        $result = mysqli_query($conn, $insertQuery);
+
+                        if ($result) {
+                            echo '<style>';
+                            echo '.modal-alert {';
+                            echo '    display: block;';
+                            echo '    position: fixed;';
+                            echo '    top: 20%;';
+                            echo '    left: 50%;';
+                            echo '    transform: translate(-50%, -50%);';
+                            echo '    padding: 20px;';
+                            echo '    background-color: #32CD32;'; // Updated to a higher and red color
+                            echo '    border: 1px solid #66ff66;';
+                            echo '    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);';
+                            echo '    z-index: 9999;'; // Ensure it appears above other elements
+                            echo '}';
+                            echo '.close-button {';
+                            echo '    position: absolute;';
+                            echo '    top: 5px;';
+                            echo '    right: 10px;';
+                            echo '    font-size: 20px;';
+                            echo '    cursor: pointer;';
+                            echo '}';
+                            echo '</style>';
+                        
+                            echo '<div class="modal-alert">';
+                            echo '    <span class="close-button" onclick="closeAlert()">&times;</span>';
+                            echo '    <p>Appointment Submitted</p>';
+                            echo '</div>';
+                        
+                            echo '<script>';
+                            echo 'function closeAlert() {';
+                            echo '    var alertBox = document.querySelector(".modal-alert");';
+                            echo '    if (alertBox) { alertBox.remove(); }';
+                            echo '}';
+                            echo '</script>';
+                        } else {
+                            echo "Error: " . mysqli_error($conn);
+                        }
+                    } else {
+                        echo "Error: " . mysqli_error($conn);
+                    }
                 }
             } else {
                 echo "Error: " . mysqli_error($conn);
@@ -57,7 +228,7 @@ if (isset($_POST['appointsub'])) {
 ?>
 
 <?php
-include 'C:\xampp\htdocs\Web_Tech\doctor\doctorheader.php';
+include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
 ?>
 
 <?php
@@ -104,7 +275,18 @@ while ($row = mysqli_fetch_array($result)) {
                     <h4 class="text-uppercase text-white">Welcome,  <?php echo $row['p_FullName'];?></h4>
                     <h1 class="display-2 my-4 text-white text-uppercase">Certified Doctor's <br>Appointment System</h1>
                     <div class="set-section">
-                    <a href="#appointment-area">Click here for an Appointment</a>
+                    <form method="post" action="">
+                        <div class="col-md-6 col-lg-6 col-11 mx-1 my-auto search-box">
+                            <div class="input-group form-container">
+                                <input type="text" name="search" class="form-control search-input" placeholder="Search Doctor or Specialization" autofocus="autofocus" autocomplete="off">
+                                <span class="input-group-btn">
+                                <button type="submit" name="submit_search" class="btn btn-search">
+                                    <i class="fa-solid fa-magnifying-glass" width="40"></i>
+                                </button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,16 @@ if(isset($_POST['appointsub'])) {
 ?>
 
 <?php
+if(isset($_GET['delete'])){
+    $id = $_GET['delete'];
+    mysqli_query($conn, "DELETE FROM appointment WHERE requestID = '$id'");
+    header('Location: /Web_Tech/doctor/doctorhome.php');
+};
+
+
+?>
+
+<?php
 $currentDoc = $_SESSION['d_email'];
 $sql = "SELECT * FROM doctor WHERE d_email = '$currentDoc'";
 
@@ -117,16 +127,17 @@ while ($row = mysqli_fetch_array($result)) {
                 <div class="col-md-3">
                     <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                         <div>
-                            <?php
-                                $query = "SELECT patientID FROM patient ORDER BY patientID";
-                                $query_run = mysqli_query($conn, $query);
-                                if ($row = mysqli_num_rows($query_run)) {
-                                    echo '<h3 class="fs-2">' . $row . '</h3>';
-                                }else{
-                                    echo '<h3 class="fs-2">No Data</h3>';
-                                }
-
-                            ?>
+                        <?php
+                            $currentDoc = $_SESSION['d_email'];
+                            $patientCountQuery = "SELECT COUNT(DISTINCT p_email) AS patientCount FROM appointment WHERE d_email = '$currentDoc'";
+                            $patientCountResult = mysqli_query($conn, $patientCountQuery);
+                            
+                            if ($patientCountResult && $row = mysqli_fetch_assoc($patientCountResult)) {
+                                echo '<h3 class="fs-2">' . $row['patientCount'] . '</h3>';
+                            } else {
+                                echo '<h3 class="fs-2">No Data</h3>';
+                            }
+                        ?>
                             <p class="fs-5" style="color:#046167;"><b>All Patients</b></p>
                         </div>
                         <i class="fas fa-users fs-1 primary-text border rounded-full secondary-bg p-3"></i>

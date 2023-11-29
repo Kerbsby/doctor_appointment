@@ -1,5 +1,4 @@
 <?php
-
 $currentAd = $_SESSION['email'];
 $sql = "SELECT * FROM app_admin WHERE admin_email = '$currentAd'";
 

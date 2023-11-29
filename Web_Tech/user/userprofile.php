@@ -104,11 +104,7 @@ while ($row = mysqli_fetch_array($result)) {
 
 
                                             <tr>
-                                                <td>Doctor ID</td>
-                                                <td><?php echo $row['patientID']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Doctor FullName</td>
+                                                <td>FullName</td>
                                                 <td><?php echo $row['p_FullName']; ?></td>
                                             </tr>
                                             <tr>

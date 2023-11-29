@@ -88,16 +88,17 @@ while ($row = mysqli_fetch_array($result)) {
                 <div class="col-md-3">
                     <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                         <div>
-                            <?php
-                            $query = "SELECT patientID FROM patient ORDER BY patientID";
-                            $query_run = mysqli_query($conn, $query);
-                            if ($row = mysqli_num_rows($query_run)) {
-                                echo '<h3 class="fs-2">' . $row . '</h3>';
-                            }else{
+                        <?php
+                            $currentDoc = $_SESSION['d_email'];
+                            $patientCountQuery = "SELECT COUNT(DISTINCT p_email) AS patientCount FROM appointment WHERE d_email = '$currentDoc'";
+                            $patientCountResult = mysqli_query($conn, $patientCountQuery);
+                            
+                            if ($patientCountResult && $row = mysqli_fetch_assoc($patientCountResult)) {
+                                echo '<h3 class="fs-2">' . $row['patientCount'] . '</h3>';
+                            } else {
                                 echo '<h3 class="fs-2">No Data</h3>';
                             }
-
-                            ?>
+                        ?>
                             <p class="fs-5" style="color:#046167;"><b>All Patients</b></p>
                         </div>
                         <i class="fas fa-users fs-1 primary-text border rounded-full secondary-bg p-3"></i>
@@ -141,13 +142,16 @@ while ($row = mysqli_fetch_array($result)) {
                         </thead>
                         <tbody>
                         <?php
-                        $sql = "SELECT * FROM patient";
-                        $result = mysqli_query($conn, $sql);
+                            $currentDoc = $_SESSION['d_email'];
+                            $patientListQuery = "SELECT DISTINCT p.* 
+                                                FROM patient p 
+                                                INNER JOIN appointment a ON p.p_email = a.p_email 
+                                                WHERE a.d_email = '$currentDoc'";
+                            $patientListResult = mysqli_query($conn, $patientListQuery);
 
-                        if ($result) {
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_array($result)) {
-                                    ?>
+                            if ($patientListResult) {
+                                while ($row = mysqli_fetch_array($patientListResult)) {
+                            ?>
                                     <tr>
                                         <td><?php echo $row['p_FullName'] ?></td>
                                         <td><?php echo $row['p_gender'] ?></td>
@@ -156,11 +160,11 @@ while ($row = mysqli_fetch_array($result)) {
                                         <td><?php echo $row['p_DOB'] ?></td>
                                         <td><?php echo $row['p_address'] ?></td>
                                     </tr>
-                                    <?php
-
+                            <?php
                                 }
+                            } else {
+                                echo '<tr><td    colspan="6">No Data</td></tr>';
                             }
-                        }
                         ?>
                         </tbody>
                     </table>

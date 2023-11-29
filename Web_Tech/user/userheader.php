@@ -61,6 +61,9 @@
                         <a class="nav-link" href="/Web_Tech/user/userappointment.php">Apointment</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/Web_Tech/user/doctorpage.php">Doctors</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
