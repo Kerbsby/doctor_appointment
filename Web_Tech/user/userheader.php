@@ -72,33 +72,27 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto" id="nav_right">
-                    <?php
-                    $currentUser = $_SESSION['email'];
-                    $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
+                        <?php
+                        $currentUser = $_SESSION['email'];
+                        $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
+                        $result = mysqli_query($conn, $sql);
 
-                    $result = mysqli_query($conn, $sql);
-
-                    if ($result) {
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_array($result)) {
-                                ?>
-                                <li class="nav-item dropdown collapse navbar-collapse" id="navbarSupportedContent">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                       <?php echo $row['p_FullName'];?>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item"href="/Web_Tech/user/userprofile.php">Profile</a></li>
-                                        <li><a class="dropdown-item" href="/Web_Tech/user/userlogout.php">Logout</a></li>
-                                    </ul>
-                                </li>
-
-
-                                <?php
-                            }
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_array($result);
+                        ?>
+                            <li class="nav-item dropdown collapse navbar-collapse" id="navbarSupportedContent">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                   <?php echo $row['p_FullName'];?>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/Web_Tech/user/userprofile.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Web_Tech/user/userlogout.php">Logout</a></li>
+                                </ul>
+                            </li>
+                        <?php
                         }
-                    }
-                    ?>
-                </ul>
+                        ?>
+                    </ul>
             </div>
         </div>
 </nav>

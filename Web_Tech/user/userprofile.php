@@ -26,10 +26,11 @@ if(isset($_POST['submit'])) {
     $result = mysqli_query($conn, $sql);
     if ($result) {
         header('Location: /Web_Tech/user/userprofile.php');
+        exit(); // Ensure that no further content is sent after the redirect header
+    } else {
+        echo "Error updating record: " . mysqli_error($conn); // Add error handling
     }
-
 }
-
 ?>
 
 <?php
