@@ -1,7 +1,7 @@
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 session_start();
-include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
+
 ?>
 
 
@@ -34,6 +34,7 @@ if(isset($_POST['submit'])) {
 
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
+include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
 
 $currentUser = $_SESSION['email'];
 $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";

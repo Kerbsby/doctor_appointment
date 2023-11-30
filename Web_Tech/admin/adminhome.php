@@ -26,6 +26,8 @@ while ($row = mysqli_fetch_array($result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/Web_Tech/css/style.css">
     <link rel="stylesheet" href="/Web_Tech/css/dochome.css">
+    <link rel="stylesheet" href="/Web_Tech/css/admin.css">
+
     <title>MedBook</title>
 </head>
 <body>
@@ -69,13 +71,12 @@ while ($row = mysqli_fetch_array($result)) {
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="navbar-nav ms-auto" id="nav_right">
+                <ul class="navbar-nav ms-auto mx-5" id="nav_right">
                     <li class="nav-item dropdown collapse navbar-collapse" id="navbarSupportedContent">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user me-2"></i><?php echo $row['admin_name'];?>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="doctorprofile.php">Profile</a></li>
                             <li><a class="dropdown-item" href="/Web_Tech/user/userlogout.php">Logout</a></li>
                         </ul>
                     </li>
@@ -154,8 +155,9 @@ while ($row = mysqli_fetch_array($result)) {
                         </div>
                     </div>
                 <div class="row my-5">
-                <h3 class="fs-3 mb-3">Patient List</h3>
-                <div class="col-7 text-center">
+                <h3 class="fs-4 mb-3">Patient List</h3>
+                <div class="patient_list row my-4">
+                <div class="col-10 text-center">
                     <form class="form" role="form" method="POST" accept-charset="UTF-8">
                         <table class="table bg-white rounded shadow-sm  table-hover">
                             <thead>
@@ -187,47 +189,52 @@ while ($row = mysqli_fetch_array($result)) {
                         </table>
                     </form>
                 </div>
+                </div>
             </div>
 
 
-                <div class="row my-5">
-                    <h3 class="fs-3 mb-3">Doctor List</h3>
-                    <div class="col-7 text-center">
-                        <form class="form" role="form" method="POST" accept-charset="UTF-8">
-                            <table class="table bg-white rounded shadow-sm  table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col" width="50">Doctor Name</th>
-                                    <th scope="col" width="50">Doctor Gender</th>
-                                    <th scope="col" width="50">Specialize</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $sql = "SELECT * FROM doctor";
-                                $result = mysqli_query($conn, $sql);
 
-                                if ($result) {
-                                    if (mysqli_num_rows($result) > 0) {
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $row['d_FullName'] ?></td>
-                                                <td><?php echo $row['d_gender'] ?></td>
-                                                <td><?php echo $row['d_specialize'] ?></td>
-                                            </tr>
-                                            <?php
+            <div class="row my-5">
+                <h3 class="fs-4 mb-3">Doctor List</h3>
+                <div class="patient_list row my-4">
+                <div class="col-10 text-center">
+                    <form class="form" role="form" method="POST" accept-charset="UTF-8">
+                        <table class="table bg-white rounded shadow-sm  table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col" width="50">Doctor Name</th>
+                                <th scope="col" width="50">Doctor Gender</th>
+                                <th scope="col" width="50">Work Hourse</th>
+                                <th scope="col" width="50">Specialize</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                             $sql = "SELECT * FROM doctor";
+                             $result = mysqli_query($conn, $sql);
 
-                                        }
-                                    }
-                                }
-                                ?>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
+                             if ($result) {
+                                 if (mysqli_num_rows($result) > 0) {
+                                     while ($row = mysqli_fetch_array($result)) {
+                                         ?>
+                                         <tr>
+                                             <td><?php echo $row['d_FullName'] ?></td>
+                                             <td><?php echo $row['d_gender'] ?></td>
+                                             <td><?php echo date('h:i A', strtotime( $row['start_time'])) . '-' . date('h:i A', strtotime( $row['end_time'] )) ?></td>
+                                             <td><?php echo $row['d_specialize'] ?></td>
+                                         </tr>
+                                         <?php
+
+                                     }
+                                 }
+                             }
+                            ?>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
-
+                </div>
+            </div>
     </div>
 </div>
 <!-- /#page-content-wrapper -->

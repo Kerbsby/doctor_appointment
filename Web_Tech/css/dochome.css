@@ -1,11 +1,9 @@
 
-
-
 :root {
-    --main-bg-color: #009d63;
-    --main-text-color: #009d63;
+    --main-bg-color: #092032;
+    --main-text-color: #092032;
     --second-text-color: #bbbec5;
-    --second-bg-color: #c1efde;
+    --second-bg-color: #4885b480;
 }
 
 
@@ -21,7 +19,7 @@
 }
 
 .primary-text {
-    color: var(--main-text-color);
+    color: #092032;
 }
 
 .second-text {

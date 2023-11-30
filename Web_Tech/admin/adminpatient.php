@@ -5,13 +5,6 @@ include 'C:\xampp\htdocs\Web_Tech\admin\adminheader.php';
 
 ?>
 
-<?php
-if(isset($_GET['delete'])){
-$id = $_GET['delete'];
-mysqli_query($conn, "DELETE FROM patient WHERE patientID = '$id'");
-header('Location: /Web_Tech/admin/adminpatient.php');
-};
-?>
 
 <?php
 $currentAd = $_SESSION['email'];
@@ -24,64 +17,6 @@ if (mysqli_num_rows($result) > 0) {
 while ($row = mysqli_fetch_array($result)) {
 ?>
 
-
-<?php
-if(isset($_POST['appointsub'])){
-    $id = $_GET['update'];
-    $fullname = $_POST['pFullName'];
-    $number = $_POST['pNumber'];
-    $email = $_POST['pEmail'];
-    $address = $_POST['pAddress'];
-    $day = $_POST['day'];
-    $month = $_POST['month'];
-    $year = $_POST['year'];
-    $DOB = $year . "-" . $month . "-" . $day;
-    $gender = $_POST['pGender'];
-
-    $sql = "UPDATE patient SET patientID = '$id', p_FullName = '$fullname',p_DOB = '$DOB',p_gender = '$gender', p_address = '$address', p_number = '$number', p_email = '$email'  WHERE patientID = '$id'";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        header('Location: /Web_Tech/admin/adminpatient.php');
-    }
-}
-?>
-
-
-
-<?php
-if(isset($_POST['addpatient'])) {
-$pFullName = $_POST['pFullName'];
-$pEmail = $_POST['pEmail'];
-$pNumber = $_POST['pNumber'];
-$pAddress = $_POST['pAddress'];
-$password = md5($_POST['password']);
-$confirm_password = md5($_POST['confirm_password']);
-$day = $_POST['day'];
-$month = $_POST['month'];
-$year = $_POST['year'];
-$DOB = $year . "-" . $month . "-" . $day;
-$pGender = $_POST['pGender'];
-
-if($password == $confirm_password){
-$sql = "SELECT * FROM patient WHERE p_email = '$pEmail'";
-$result = mysqli_query($conn, $sql);
-if(!$result->num_rows > 0) {
-$sql = "INSERT INTO patient(p_FullName, p_email, p_number, p_address, p_password, p_DOB, p_gender) VALUES ('$pFullName', '$pEmail', '$pNumber', '$pAddress', '$password', '$DOB', '$pGender')";
-$result = mysqli_query($conn, $sql);
-if($result){
-echo 'Registered Successfully';
-} else{
-echo 'Woops! Something went wrong.';
-}
-} else{
-echo 'Woops! Email already exists.';
-}
-
-} else{
-echo 'Password Not Matched.';
-}
-}
-?>
 
 
 <!DOCTYPE html>
@@ -115,8 +50,6 @@ echo 'Password Not Matched.';
                 <i class="fas fa-hospital-user me-2"></i>Patient List</a>
             <a href="admindoc.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 <i class="fas fa-hospital-user me-2"></i>Doctor List</a>
-            <a href="doctorprofile.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                    class="fas fa-user me-2"></i>Profile</a>
             <a href="/Web_Tech/user/userlogout.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                     class="fas fa-power-off me-2" style="color: #c72a2a;"></i>Logout</a>
 
@@ -248,11 +181,7 @@ echo 'Password Not Matched.';
 
 
                 <div class="row my-5">
-                    <div class="col-12 col-md-5">
-                        <div class="form-group mb-0">
-                            <button type="submit" class="btn medilife-btn" id="medilife" data-bs-toggle="modal" data-bs-target="#addpatient">Patient <span>+</span></button>
-                        </div>
-                    </div>
+                <h3 class="fs-4 mb-3">Patient List</h3>
                     <div class="patient_list row my-4">
                 <div class="col-10 text-center">
                     <form class="form" role="form" method="POST" accept-charset="UTF-8">
@@ -261,7 +190,6 @@ echo 'Password Not Matched.';
                         <tr>
                             <th scope="col" width="50">Patient Name</th>
                             <th scope="col" width="50">Patient Gender</th>
-                            <th scope="col" width="50">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -276,11 +204,6 @@ echo 'Password Not Matched.';
                                     <tr>
                                         <td><?php echo $row['p_FullName'] ?></td>
                                         <td><?php echo $row['p_gender'] ?></td>
-                                        <td>
-                                            <button type="button" id="act_button" class="btn btn-warning btn-xs update" data-bs-toggle="modal" data-bs-target="#myUpdate"><a class="glyphicon glyphicon-edit" style="text-decoration: none;" href="?update=<?php echo $row['patientID']; ?>" title="Edit">Edit</a></button>
-                                            <button type="button" name="delete" id="act_button" class="btn btn-warning btn-xs update"><a class="glyphicon glyphicon-edit" style="text-decoration: none;" href="/Web_Tech/admin/adminpatient.php?delete=<?php echo $row['patientID']; ?>" title="Edit">Delete</a></button>
-
-                                        </td>
                                     </tr>
                                     <?php
 
@@ -307,320 +230,6 @@ echo 'Password Not Matched.';
 </div>
 
 
-
-
-<div class="modal fade" id="myUpdate">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- modal content -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Appointment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- modal body start -->
-            <div class="modal-body">
-                <!-- form start -->
-                <div class="container" id="wrap">
-                    <div class="row">
-                        <div class="col">
-                            <form class="form" role="form" method="POST" accept-charset="UTF-8">
-                                <table class="table table-user-information">
-                                    <tbody>
-                                    <label>FullName</label>
-                                    <input type="text" name="pFullName" value="" id="fullname" class="form-control input-lg" placeholder="Full Name" required />
-                                    <label>Phone Number</label>
-                                    <input type="text" name="pNumber" value="" id="number" class="form-control input-lg" placeholder="Your Phone Number"  required/>
-                                    <label>Email</label>
-                                    <input type="email" name="pEmail" value="" id="email" class="form-control input-lg " placeholder="Your Email"  required/>
-                                    <label>Address</label>
-                                    <input type="text" name="pAddress" value="" id="address" class="form-control input-lg" placeholder="Address" required />
-                                    <label>Birth Date</label>
-                                    <div class="row">
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="month" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Month</option>
-                                                <option value="01">Jan</option>
-                                                <option value="02">Feb</option>
-                                                <option value="03">Mar</option>
-                                                <option value="04">Apr</option>
-                                                <option value="05">May</option>
-                                                <option value="06">Jun</option>
-                                                <option value="07">Jul</option>
-                                                <option value="08">Aug</option>
-                                                <option value="09">Sep</option>
-                                                <option value="10">Oct</option>
-                                                <option value="11">Nov</option>
-                                                <option value="12">Dec</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="day" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Day</option>
-                                                <option value="01">1</option>
-                                                <option value="02">2</option>
-                                                <option value="03">3</option>
-                                                <option value="04">4</option>
-                                                <option value="05">5</option>
-                                                <option value="06">6</option>
-                                                <option value="07">7</option>
-                                                <option value="08">8</option>
-                                                <option value="09">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                                <option value="13">13</option>
-                                                <option value="14">14</option>
-                                                <option value="15">15</option>
-                                                <option value="16">16</option>
-                                                <option value="17">17</option>
-                                                <option value="18">18</option>
-                                                <option value="19">19</option>
-                                                <option value="20">20</option>
-                                                <option value="21">21</option>
-                                                <option value="22">22</option>
-                                                <option value="23">23</option>
-                                                <option value="24">24</option>
-                                                <option value="25">25</option>
-                                                <option value="26">26</option>
-                                                <option value="27">27</option>
-                                                <option value="28">28</option>
-                                                <option value="29">29</option>
-                                                <option value="30">30</option>
-                                                <option value="31">31</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="year" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Year</option>
-
-                                                <option value="1981">1981</option>
-                                                <option value="1982">1982</option>
-                                                <option value="1983">1983</option>
-                                                <option value="1984">1984</option>
-                                                <option value="1985">1985</option>
-                                                <option value="1986">1986</option>
-                                                <option value="1987">1987</option>
-                                                <option value="1988">1988</option>
-                                                <option value="1989">1989</option>
-                                                <option value="1990">1990</option>
-                                                <option value="1991">1991</option>
-                                                <option value="1992">1992</option>
-                                                <option value="1993">1993</option>
-                                                <option value="1994">1994</option>
-                                                <option value="1995">1995</option>
-                                                <option value="1996">1996</option>
-                                                <option value="1997">1997</option>
-                                                <option value="1998">1998</option>
-                                                <option value="1999">1999</option>
-                                                <option value="2000">2000</option>
-                                                <option value="2001">2001</option>
-                                                <option value="2002">2002</option>
-                                                <option value="2003">2003</option>
-                                                <option value="2004">2004</option>
-                                                <option value="2005">2005</option>
-                                                <option value="2006">2006</option>
-                                                <option value="2007">2007</option>
-                                                <option value="2008">2008</option>
-                                                <option value="2009">2009</option>
-                                                <option value="2010">2010</option>
-                                                <option value="2011">2011</option>
-                                                <option value="2012">2012</option>
-                                                <option value="2013">2013</option>
-                                                <option value="2014">2014</option>
-                                                <option value="2015">2015</option>
-                                                <option value="2016">2016</option>
-                                                <option value="2017">2017</option>
-                                                <option value="2018">2018</option>
-                                                <option value="2019">2019</option>
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <label>Gender : </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender" name="pGender" value="male" required/>Male
-                                    </label>
-                                    <label class="radio-inline" >
-                                        <input type="radio" id="gender" name="pGender" value="female" required/>Female
-                                    </label>
-                                    </tbody>
-                                </table>
-                        <div class="modal-footer">
-                            <button type="submit" name="appointsub" id="appointsub" class="btn btn-primary">Submit</button>
-                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
-
-
-
-<div class="modal fade" id="addpatient" tabindex="-1" role="dialog" aria-labelledby="myModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- modal content -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Patient</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- modal body start -->
-                <div class="modal-body">
-                    <!-- form start -->
-                    <div class="container" id="wrap">
-                        <div class="row">
-                            <div class="col">
-                                <form class="form" role="form" method="POST" accept-charset="UTF-8">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-sm-6">
-                                            <label>FullName</label><input type="text" name="pFullName" value="" id="fullname" class="form-control input-lg" placeholder="Full Name" required />
-                                        </div>
-                                        <div class="col-sm-6 col-sm-6">
-                                            <label>Phone Number</label><input type="text" name="pNumber" value="" id="number" class="form-control input-lg" placeholder="Your Phone Number"  required/>
-                                        </div>
-                                    </div>
-                                    <label>Email</label>
-                                    <input type="email" name="pEmail" value="" id="email" class="form-control input-lg " placeholder="Your Email"  required/>
-                                    <label>Address</label>
-                                    <input type="text" name="pAddress" value="" id="address" class="form-control input-lg" placeholder="Address" required />
-
-                                    <label>Password</label>
-                                    <input type="password" name="password" value="" id="password" class="form-control input-lg" placeholder="Password"  required/>
-                                    <label>Confirm Password</label>
-                                    <input type="password" name="confirm_password" id="password" value="" class="form-control input-lg" placeholder="Confirm Password"  required/>
-                                    <label>Birth Date</label>
-                                    <div class="row">
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="month" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Month</option>
-                                                <option value="01">Jan</option>
-                                                <option value="02">Feb</option>
-                                                <option value="03">Mar</option>
-                                                <option value="04">Apr</option>
-                                                <option value="05">May</option>
-                                                <option value="06">Jun</option>
-                                                <option value="07">Jul</option>
-                                                <option value="08">Aug</option>
-                                                <option value="09">Sep</option>
-                                                <option value="10">Oct</option>
-                                                <option value="11">Nov</option>
-                                                <option value="12">Dec</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="day" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Day</option>
-                                                <option value="01">1</option>
-                                                <option value="02">2</option>
-                                                <option value="03">3</option>
-                                                <option value="04">4</option>
-                                                <option value="05">5</option>
-                                                <option value="06">6</option>
-                                                <option value="07">7</option>
-                                                <option value="08">8</option>
-                                                <option value="09">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                                <option value="13">13</option>
-                                                <option value="14">14</option>
-                                                <option value="15">15</option>
-                                                <option value="16">16</option>
-                                                <option value="17">17</option>
-                                                <option value="18">18</option>
-                                                <option value="19">19</option>
-                                                <option value="20">20</option>
-                                                <option value="21">21</option>
-                                                <option value="22">22</option>
-                                                <option value="23">23</option>
-                                                <option value="24">24</option>
-                                                <option value="25">25</option>
-                                                <option value="26">26</option>
-                                                <option value="27">27</option>
-                                                <option value="28">28</option>
-                                                <option value="29">29</option>
-                                                <option value="30">30</option>
-                                                <option value="31">31</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-4 col-md-4">
-                                            <select name="year" id="DOB" class = "form-control input-lg" required>
-                                                <option value="">Year</option>
-
-                                                <option value="1981">1981</option>
-                                                <option value="1982">1982</option>
-                                                <option value="1983">1983</option>
-                                                <option value="1984">1984</option>
-                                                <option value="1985">1985</option>
-                                                <option value="1986">1986</option>
-                                                <option value="1987">1987</option>
-                                                <option value="1988">1988</option>
-                                                <option value="1989">1989</option>
-                                                <option value="1990">1990</option>
-                                                <option value="1991">1991</option>
-                                                <option value="1992">1992</option>
-                                                <option value="1993">1993</option>
-                                                <option value="1994">1994</option>
-                                                <option value="1995">1995</option>
-                                                <option value="1996">1996</option>
-                                                <option value="1997">1997</option>
-                                                <option value="1998">1998</option>
-                                                <option value="1999">1999</option>
-                                                <option value="2000">2000</option>
-                                                <option value="2001">2001</option>
-                                                <option value="2002">2002</option>
-                                                <option value="2003">2003</option>
-                                                <option value="2004">2004</option>
-                                                <option value="2005">2005</option>
-                                                <option value="2006">2006</option>
-                                                <option value="2007">2007</option>
-                                                <option value="2008">2008</option>
-                                                <option value="2009">2009</option>
-                                                <option value="2010">2010</option>
-                                                <option value="2011">2011</option>
-                                                <option value="2012">2012</option>
-                                                <option value="2013">2013</option>
-                                                <option value="2014">2014</option>
-                                                <option value="2015">2015</option>
-                                                <option value="2016">2016</option>
-                                                <option value="2017">2017</option>
-                                                <option value="2018">2018</option>
-                                                <option value="2019">2019</option>
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <label>Gender : </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" id="gender" name="pGender" value="male" required/>Male
-                                    </label>
-                                    <label class="radio-inline" >
-                                        <input type="radio" id="gender" name="pGender" value="female" required/>Female
-                                    </label>
-                                    <br />
-                                    <div class="d-md-flex justify-content-md-end">
-                                        <button class="btn me-md-2 signup-btn" type="submit" name="addpatient" id="addpatient">Create my account</button>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div
 
 
 
