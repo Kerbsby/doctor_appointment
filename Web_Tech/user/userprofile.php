@@ -8,7 +8,7 @@ session_start();
 <?php
 include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 
-if(isset($_POST['submit'])) {
+if(isset($_POST['update'])) {
     $id = $_GET['update'];
     $fullname = $_POST['pFullName'];
     $number = $_POST['pNumber'];
@@ -26,16 +26,14 @@ if(isset($_POST['submit'])) {
     $result = mysqli_query($conn, $sql);
     if ($result) {
         header('Location: /Web_Tech/user/userprofile.php');
-        exit(); // Ensure that no further content is sent after the redirect header
-    } else {
-        echo "Error updating record: " . mysqli_error($conn); // Add error handling
     }
 }
 ?>
 
 <?php
-include 'C:\xampp\htdocs\Web_Tech\config\config.php';
 include 'C:\xampp\htdocs\Web_Tech\user\userheader.php';
+
+
 
 $currentUser = $_SESSION['email'];
 $sql = "SELECT * FROM patient WHERE p_email = '$currentUser'";
@@ -85,7 +83,7 @@ while ($row = mysqli_fetch_array($result)) {
 
                                     <hr />
                                     <div class="form-group mb-0">
-                                        <button type="submit" class="btn medilife-btn" id="medilife" data-bs-toggle="modal" data-bs-target="#userprofile"><a style="color: white; text-decoration: none;" href="?update=<?php echo $row['patientID']; ?>"> Update Profile </a><span>+</span></button>
+                                        <button type="submit" class="btn medilife-btn" id="medilife" data-bs-toggle="modal" data-bs-target="#userprofile"><a style="color: white; text-decoration: none;" href="userprofile.php?update=<?php echo $row['patientID']; ?>"> Update Profile </a><span>+</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +156,7 @@ while ($row = mysqli_fetch_array($result)) {
 
 
 
-<div class="modal fade" id="userprofile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="userprofile" tabindex="-1" role="dialog" aria-labelledby="userprofile">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -313,7 +311,7 @@ while ($row = mysqli_fetch_array($result)) {
                     </table>
 
                     <div class="modal-footer">
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" name="update" id="update" class="btn btn-primary">Update</button>
                         <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
 

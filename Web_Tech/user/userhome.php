@@ -346,98 +346,8 @@ while ($row = mysqli_fetch_array($result)) {
 </div>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- modal content -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- modal body start -->
-            <div class="modal-body">
-                <!-- form start -->
-                <div class="container" id="wrap">
-                    <div class="row">
-                        <div class="col">
-                            <form class="form" role="form" method="POST" accept-charset="UTF-8">
 
 
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Patient Information</div>
-                                    <div class="panel-body">
-                                        Patient Name: <?php echo $row['p_FullName'] ?><br>
-                                        Email: <?php echo $row['p_email'] ?><br>
-                                        Contact Number: <?php echo $row['p_number'] ?><br>
-                                        Address: <?php echo $row['p_address'] ?>
-                                    </div>
-                                </div>
-                                <?php
-
-                                                }
-                                            }
-                                        }
-                                        ?>
-                                        <select class="form-select" aria-label="Default select example" name="doctor">
-                                        <option selected>Select a doctor</option>
-                                        <?php
-                                        $query = "SELECT * FROM doctor";
-                                        $query_run = mysqli_query($conn, $query);
-
-                                        if(mysqli_num_rows($query_run) > 0){
-                                            foreach ($query_run as $row){
-                                                // Fetch the doctor's specialty from the database based on the email
-                                                $doctorEmail = $row['d_email'];
-                                                $specialtyQuery = "SELECT d_specialize FROM doctor WHERE d_email = '$doctorEmail'";
-                                                $specialtyResult = mysqli_query($conn, $specialtyQuery);
-                                                $specialtyRow = mysqli_fetch_assoc($specialtyResult);
-                                                $specialty = $specialtyRow['d_specialize'];
-                                        ?>
-                                        <option value="<?= $doctorEmail; ?>" data-specialty="<?= $specialty; ?>">
-                                            <?= $row['d_FullName']; ?> - <?= $specialty; ?>
-                                        </option>
-                                                                                
-                                                <?php
-                                            }
-                                            }
-                                            ?>
-                                        </select>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group col-sm-6 col-sm-6">
-                                        <label for="">Preferred Date</label>
-                                        <input type="date" name="date" id="date" class="form-control" />
-                                    </div>
-                                    <div class="form-group col-sm-6 col-sm-6">
-                                        <label for="">Time</label>
-                                        <input type="time" name="time" id="time" class="form-control">
-                                    </div>
-                                </div>
-                                <br>
-
-
-                                <div class="form-group">
-                                    <label for="recipient-name" class="control-label">Symptom:</label>
-                                    <input type="text" class="form-control" id="symptom" name="symptom" required>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Comment:</label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea><br>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" name="appointsub" id="appointsub" class="btn btn-primary">Submit</button>
-                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!--bottom content-->
@@ -554,6 +464,102 @@ while ($row = mysqli_fetch_array($result)) {
     </div>
 
 </footer>
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- modal content -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- modal body start -->
+            <div class="modal-body">
+                <!-- form start -->
+                <div class="container" id="wrap">
+                    <div class="row">
+                        <div class="col">
+                            <form class="form" role="form" method="POST" accept-charset="UTF-8">
+
+
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Patient Information</div>
+                                    <div class="panel-body">
+                                        Patient Name: <?php echo $row['p_FullName'] ?><br>
+                                        Email: <?php echo $row['p_email'] ?><br>
+                                        Contact Number: <?php echo $row['p_number'] ?><br>
+                                        Address: <?php echo $row['p_address'] ?>
+                                    </div>
+                                </div>
+                                <?php
+
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                        <select class="form-select" aria-label="Default select example" name="doctor">
+                                        <option selected>Select a doctor</option>
+                                        <?php
+                                        $query = "SELECT * FROM doctor";
+                                        $query_run = mysqli_query($conn, $query);
+
+                                        if(mysqli_num_rows($query_run) > 0){
+                                            foreach ($query_run as $row){
+                                                // Fetch the doctor's specialty from the database based on the email
+                                                $doctorEmail = $row['d_email'];
+                                                $specialtyQuery = "SELECT d_specialize FROM doctor WHERE d_email = '$doctorEmail'";
+                                                $specialtyResult = mysqli_query($conn, $specialtyQuery);
+                                                $specialtyRow = mysqli_fetch_assoc($specialtyResult);
+                                                $specialty = $specialtyRow['d_specialize'];
+                                        ?>
+                                        <option value="<?= $doctorEmail; ?>" data-specialty="<?= $specialty; ?>">
+                                            <?= $row['d_FullName']; ?> - <?= $specialty; ?>
+                                        </option>
+                                                                                
+                                                <?php
+                                            }
+                                            }
+                                            ?>
+                                        </select>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group col-sm-6 col-sm-6">
+                                        <label for="">Preferred Date</label>
+                                        <input type="date" name="date" id="date" class="form-control" />
+                                    </div>
+                                    <div class="form-group col-sm-6 col-sm-6">
+                                        <label for="">Time</label>
+                                        <input type="time" name="time" id="time" class="form-control">
+                                    </div>
+                                </div>
+                                <br>
+
+
+                                <div class="form-group">
+                                    <label for="recipient-name" class="control-label">Symptom:</label>
+                                    <input type="text" class="form-control" id="symptom" name="symptom" required>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">Comment:</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea><br>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="appointsub" id="appointsub" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
